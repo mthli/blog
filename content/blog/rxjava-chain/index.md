@@ -50,10 +50,14 @@ public final Observable<T> filter(Predicate<? super T> predicate) {
 可以看到，每调用一次 filter 都会将上层的 Observable 包装成一个新的 ObservableFilter. 以此类推，我们最初的例子的调用栈实际上是这样的：
 
 ```java
-ObservableObserveOn.subscribeActual() { // 最后被执行
-  ObservableMap.subscribeActual() { // 第三个被执行
-    ObservableFilter.subscribeActual() { // 第二个被执行
-      ObservableCreate.subscribeActual() { // 嵌套最深的最先被执行
+// 最后被执行
+ObservableObserveOn.subscribeActual() {
+  // 第三个被执行
+  ObservableMap.subscribeActual() {
+     // 第二个被执行
+    ObservableFilter.subscribeActual() {
+      // 嵌套最深的最先被执行
+      ObservableCreate.subscribeActual() {
         // DO SOMETHING
       }
     }
@@ -61,4 +65,4 @@ ObservableObserveOn.subscribeActual() { // 最后被执行
 }
 ```
 
-至于每个 Observable 都是如何实现的，这里就不展开了，其中涉及 Java 的静态代理，感兴趣的同学可以参见这个回答 [Java 动态代理作用是什么？](https://www.zhihu.com/question/20794107/answer/75164285)
+看到这里，RxJava 链式调用时仍然能保持顺序关系的原理已经昭然若揭了。至于每个 Observable 都是如何实现的，这里就不展开了，其中涉及 Java 的静态代理，感兴趣的同学可以参见这个知乎回答 [Java 动态代理作用是什么？](https://www.zhihu.com/question/20794107/answer/75164285)
