@@ -46,7 +46,7 @@ const Layout = ({ title, children }) => {
           <div>
             © {new Date().getFullYear()}, built with
             {` `}
-            <a href="https://www.gatsbyjs.org">Gatsby</a>
+            <a target="_blank" rel="noopener noreferrer" href="https://www.gatsbyjs.org">Gatsby</a>
           </div>
           <div>
             <a target="_blank" rel="noopener noreferrer" href="https://github.com/mthli">GitHub</a>
