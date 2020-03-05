@@ -16,7 +16,7 @@ const NotFoundPage = ({ data, location }) => {
       <p>
         这里什么也没有，哈哈
         {` `}
-        <span>😄</span>
+        <span aria-label="smile" role="img">😄</span>
       </p>
     </Layout>
   )
