@@ -50,7 +50,7 @@ const Bio = () => {
       <div>
         Yet another blog of
         {` `}
-        <a href={`https://twitter.com/${social.twitter}`}>
+        <a target="_blank" rel="noopener noreferrer" href={`https://twitter.com/${social.twitter}`}>
           Matthew Lee
         </a>
         {` `}

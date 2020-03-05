@@ -28,6 +28,12 @@ module.exports = {
       options: {
         plugins: [
           {
+            resolve: `gatsby-remark-external-links`,
+            options: {
+              rel: "noopener noreferrer",
+            },
+          },
+          {
             resolve: `gatsby-remark-images`,
             options: {
               maxWidth: 590,
@@ -46,12 +52,14 @@ module.exports = {
       },
     },
     `gatsby-transformer-sharp`,
+    /*
     {
       resolve: `gatsby-plugin-google-analytics`,
       options: {
-        // trackingId: `ADD YOUR TRACKING ID HERE`,
+        trackingId: `ADD YOUR TRACKING ID HERE`,
       },
     },
+    */
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
