@@ -26,7 +26,7 @@ public abstract class Observable<T> implements ObservableSource<T> {
     ...
     try {
       ...
-      subscribeActual(observer);
+      subscribeActual(observer); // highlight-line
     } catch (NullPointerException e) { // NOPMD
       throw e;
     } catch (Throwable e) {
@@ -34,7 +34,8 @@ public abstract class Observable<T> implements ObservableSource<T> {
     }
   }
 
-  protected abstract void subscribeActual(Observer<? super T> observer);
+  protected abstract void subscribeActual(
+    Observer<? super T> observer);
 }
 ```
 
@@ -43,7 +44,8 @@ public abstract class Observable<T> implements ObservableSource<T> {
 ```java
 public final Observable<T> filter(Predicate<? super T> predicate) {
   ...
-  return RxJavaPlugins.onAssembly(new ObservableFilter<T>(this, predicate));
+  return RxJavaPlugins.onAssembly(
+    new ObservableFilter<T>(this, predicate)); // highlight-line
 }
 ```
 
