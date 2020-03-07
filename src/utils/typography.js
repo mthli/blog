@@ -7,7 +7,7 @@ Wordpress2016.overrideThemeStyles = () => {
       fontFamily: ["Montserrat", "sans-serif"].join(","),
     },
     "a": {
-      color: "#f06292",
+      color: "#dd4a68",
     },
     "a.gatsby-resp-image-link": {
       boxShadow: `none`,
