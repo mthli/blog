@@ -36,6 +36,7 @@ module.exports = {
           {
             resolve: `gatsby-remark-images`,
             options: {
+              linkImagesToOriginal: false,
               showCaptions: true,
             },
           },
@@ -46,6 +47,7 @@ module.exports = {
             },
           },
           `gatsby-remark-copy-linked-files`,
+          `gatsby-remark-images-zoom`,
           `gatsby-remark-prismjs`,
           `gatsby-remark-smartypants`,
         ],
