@@ -165,7 +165,8 @@ public abstract class Observable<@NonNull T>
     ...
     return RxJavaPlugins.onAssembly(
       // highlight-next-line
-      new ObservableSubscribeOn<>(this, scheduler));
+      new ObservableSubscribeOn<>(this, scheduler)
+    );
   }
 }
 ```
