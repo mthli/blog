@@ -7,7 +7,14 @@
   display: block;
   margin-left: -1em;
   margin-right: -1em;
-  padding-left: 0.75em;
+  padding-left: 1em;
   padding-right: 1em;
   background-color: #ffeebb;
+}
+
+.gatsby-resp-image-figcaption {
+  display: block;
+  padding-top: 0.5em;
+  font-size: 0.75em;
+  text-align: center;
 }

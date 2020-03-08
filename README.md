@@ -7,6 +7,7 @@ Yet another blog of myself 👀
 ## Archives
 
 - [RxJava 链式调用原理](https://mthli.xyz/rxjava-chain/)
+- [RxJava 线程切换原理](https://mthli.xyz/rxjava-scheduler/)
 - TBD
 
 ## License

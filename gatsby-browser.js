@@ -4,4 +4,4 @@ import "typeface-merriweather"
 
 // 代码高亮
 import "prismjs/themes/prism.css"
-import "./prism.css"
+import "./gatsby-custom.css"
