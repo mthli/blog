@@ -211,7 +211,7 @@ public final class ObservableSubscribeOn<T>
 
     // highlight-start
     // 这是 Runnable 接口必须实现的方法，
-    // 使得 subscribe() 可以运行在对应的线程调度器上
+    // 使得 subscribe() 可以运行在对应的 Scheduler
     @Override
     public void run() {
       // source 对象是上游的 Observable,
@@ -223,7 +223,9 @@ public final class ObservableSubscribeOn<T>
 }
 ```
 
-可以看到，subscribeOn 通过将 `subscribe()` 封装在 Runnable 中，并调用 Scheduler 的 `scheduleDirect()` 进行线程切换，从而达到「设置链式调用开始执行时所在的线程」的目的。
+可以看到，subscribeOn 通过将 Observable 的 `subscribe()` 封装在 Task 中，并调用 Scheduler 的 `scheduleDirect()` 进行线程切换，从而达到「设置链式调用开始执行时所在的线程」的目的。
+
+![subscribeOn 后，Observable 运行在对应的 Scheduler](./subscribeOn.png)
 
 接着我们看看 observeOn 对应的源码：
 
@@ -321,7 +323,7 @@ public final class ObservableSubscribeOn<T>
     // highlight-start
     // 主要调用 downstream 的逻辑在这里；
     // 这是 Runnable 接口必须实现的方法，
-    // 使得 downstream 可以运行在对应的线程调度器上
+    // 使得 downstream 可以运行在对应的 Scheduler
     @Override
     public void run() { ... }
     // highlight-end
@@ -339,7 +341,9 @@ public final class ObservableSubscribeOn<T>
 }
 ```
 
-可以看到，observeOn 通过将调用下游 Observer 的逻辑封装在 Runnable 中，由指定的 Worker 实例进行线程切换，从而达到了「设置从该操作符调用处开始下游操作符所在的线程」的目的。
+可以看到，observeOn 通过将调用下游 Observer 的调用逻辑封装在 Task 中，由指定的 Worker 实例进行线程切换，从而达到了「设置从该操作符调用处开始下游操作符所在的线程」的目的。
+
+![observeOn 后，下游 Observer 运行在对应的 Scheduler](./observeOn.png)
 
 看到这里，你可能也注意到了：从之前 Scheduler 的源码我们可知，默认情况下调用 `scheduleDirect()` 也是将 Task 交给 `createWorker()` 新建的 Worker 实例执行的；那为什么 observeOn 要采取和 subscribeOn 不同的实现方式呢？感兴趣的同学可以去看看 [single](http://reactivex.io/RxJava/javadoc/io/reactivex/schedulers/Schedulers.html#single--) 调度器的源码，分开两个方法可以更充分的自定义，且这两个方法也不一定是直接相关的。只要保证底层的调度逻辑是正确的就 OK 了。
 
