@@ -45,7 +45,9 @@ public abstract class Observable<T> implements ObservableSource<T> {
 public final Observable<T> filter(Predicate<? super T> predicate) {
   ...
   return RxJavaPlugins.onAssembly(
-    new ObservableFilter<T>(this, predicate)); // highlight-line
+    // highlight-next-line
+    new ObservableFilter<T>(this, predicate)
+  );
 }
 ```
 

@@ -141,7 +141,7 @@ public class NewThreadWorker extends Scheduler.Worker
 在了解了 Scheduler 的具体实现后，我们还需要知道 Scheduler 是如何在链式调用中工作的。关于 RxJava 的链式调用是如何工作的，**建议**先阅读笔者之前的文章 [RxJava 链式调用原理](https://mthli.xyz/rxjava-chain/)，在此不予赘述。这里我们主要讲解用于线程切换的
 [subscribeOn](http://reactivex.io/RxJava/javadoc/io/reactivex/Observable.html#subscribeOn-io.reactivex.Scheduler-) 和 [observeOn](http://reactivex.io/RxJava/javadoc/io/reactivex/Observable.html#observeOn-io.reactivex.Scheduler-) 两个操作符。注意，本文均以 [Observable](http://reactivex.io/RxJava/javadoc/io/reactivex/Observable.html) 的操作符实现作为讨论对象。
 
-subscribeOn 用于设置链式调用开始执行时所在的线程；observeOn 用于设置从该操作符调用处开始下游操作符所在的线程。一个典型的线程切换场景如下：
+subscribeOn 用于设置 Observable 开始执行时所在的线程；observeOn 用于设置从该操作符调用处开始下游操作符所在的线程。一个典型的线程切换场景如下：
 
 ```java
 Observable
@@ -223,7 +223,7 @@ public final class ObservableSubscribeOn<T>
 }
 ```
 
-可以看到，subscribeOn 通过将 Observable 的 `subscribe()` 封装在 Task 中，并调用 Scheduler 的 `scheduleDirect()` 进行线程切换，从而达到「设置链式调用开始执行时所在的线程」的目的。
+可以看到，subscribeOn 通过将 Observable 的 `subscribe()` 封装在 Task 中，并调用 Scheduler 的 `scheduleDirect()` 进行线程切换，从而达到「设置 Observable 开始执行时所在的线程」的目的。
 
 ![subscribeOn 后，Observable 运行在对应的 Scheduler](./subscribeOn.png)
 
