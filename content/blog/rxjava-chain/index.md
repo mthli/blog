@@ -20,8 +20,10 @@ Observable
 链式调用从 `subscribe()` 开始被触发，我们来看一下对应的源码：
 
 ```java
-public abstract class Observable<T> implements ObservableSource<T> {
+public abstract class Observable<T>
+  implements ObservableSource<T> {
   ...
+
   public final void subscribe(Observer<? super T> observer) {
     ...
     try {
@@ -42,7 +44,9 @@ public abstract class Observable<T> implements ObservableSource<T> {
 可以看到 `subscribe()` 实际调用的是 `subscribeActual()` 的具体实现。而 Observable 的子类有 ObservableFilter, ObservableMap, ObservableObserveOn 等。聪明的你肯定想到了，这些子类显然与对应的操作符有关。以 filter 为例：
 
 ```java
-public final Observable<T> filter(Predicate<? super T> predicate) {
+public final Observable<T> filter(
+  Predicate<? super T> predicate
+) {
   ...
   return RxJavaPlugins.onAssembly(
     // highlight-next-line

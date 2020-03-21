@@ -26,7 +26,8 @@ public abstract class Scheduler {
     final Worker w = createWorker();
 
     // 静态代理并封装我们想要执行的 Runnable, 具体实现可忽略
-    final Runnable decoratedRun = RxJavaPlugins.onSchedule(run);
+    final Runnable decoratedRun
+      = RxJavaPlugins.onSchedule(run);
     DisposeTask task = new DisposeTask(decoratedRun, w);
 
     // 将 Task 交给新建的 Worker 执行
@@ -42,7 +43,8 @@ public abstract class Scheduler {
     // 注意，Worker 内部也可以维护一个自己的 Task 调度策略
     @NonNull
     public abstract Disposable schedule(
-      @NonNull Runnable run, long delay, @NonNull TimeUnit unit);
+      @NonNull Runnable run, long delay,
+      @NonNull TimeUnit unit);
   }
 }
 ```
@@ -187,7 +189,9 @@ public final class ObservableSubscribeOn<T>
   }
 
   @Override
-  public void subscribeActual(final Observer<? super T> observer) {
+  public void subscribeActual(
+    final Observer<? super T> observer
+  ) {
     // 静态代理传入的上游 Observer, 具体实现可忽略
     final SubscribeOnObserver<T> parent =
       new SubscribeOnObserver<>(observer);
@@ -268,7 +272,9 @@ public final class ObservableSubscribeOn<T>
   }
 
   @Override
-  public void subscribeActual(final Observer<? super T> observer) {
+  public void subscribeActual(
+    final Observer<? super T> observer
+  ) {
     if (scheduler instanceof TrampolineScheduler) {
       ...
     } else {
