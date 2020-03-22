@@ -1,10 +1,10 @@
 ---
 title: 深入理解达夫设备
 date: "2020-03-21T01:42:33+00:00"
-description: 达夫设备 (Duff's Device) 可能是迄今为止最令人疑惑的 C 代码之一，达夫向我们展示了 switch 语句不可思议的特性。理解达夫设备有助于我们理解一个朴素的无栈协程实现。
+description: 达夫设备 (Duff's Device) 可能是迄今为止最令人疑惑的 C 代码之一，达夫向我们展示了 switch 语句不可思议的特性。理解达夫设备有助于我们理解一种朴素的无栈协程实现。
 ---
 
-达夫设备 (Duff's Device) 可能是迄今为止最令人疑惑的 C 代码之一，达夫向我们展示了 switch 语句不可思议的特性。理解达夫设备有助于我们理解一个朴素的无栈协程实现。
+达夫设备 (Duff's Device) 可能是迄今为止最令人疑惑的 C 代码之一，达夫向我们展示了 switch 语句不可思议的特性。理解达夫设备有助于我们理解一种朴素的无栈协程实现。
 
 在开始介绍达夫设备之前，我们需要了解名为 [循环展开](https://zh.wikipedia.org/wiki/%E5%BE%AA%E7%8E%AF%E5%B1%95%E5%BC%80) 的概念：
 
@@ -140,4 +140,4 @@ themselves do not alter the flow of control, which continues unimpeded across th
 
 当达夫设备开始运行时，会先根据 switch 匹配到对应的 case 语句，由于没有声明 break 所以会一路向下执行 (falls through) 直到被 while 捕获，进入循环逻辑。这里有一份模拟达夫设备的 C 代码 [duff-like.c](https://github.com/mthli/blog/blob/master/content/blog/duff-device/duff-like.c) 以及对应的汇编文件 [duff-like.s](https://github.com/mthli/blog/blob/master/content/blog/duff-device/duff-like.s), 读者可以很轻松地验证这段运行逻辑，关注 `ja`, `jg`, `jmp`, `jmpq` 之类的跳转指令即可，这里就不展开了。
 
-达夫设备是特定时期的特定产物，现在几乎不能见到这样的循环展开实现了。但正如文章开头所述，理解达夫设备有助于我们理解一个朴素的无栈协程实现 —— 笔者将在后续文章中揭示这种无栈协程是如何实现的，敬请期待。
+达夫设备是特定时期的特定产物，现在几乎不能见到这样的循环展开实现了。但正如文章开头所述，理解达夫设备有助于我们理解一种朴素的无栈协程实现 —— 笔者将在后续文章中揭示这种无栈协程是如何实现的，敬请期待。
