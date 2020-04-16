@@ -1,14 +1,14 @@
 ---
 title: RxJava 线程切换原理
 date: "2020-03-05T11:58:18+00:00"
-description: RxJava 在链式调用的设计基础上，通过设置不同的调度器，可以灵活地在不同线程间切换并执行对应的 Task. 在本篇文章中，我们来了解一下这种切换模式是如何实现的。
+description: RxJava 在链式调用的设计基础上，通过设置不同的调度器，可以灵活地在不同线程间切换并执行对应的 Task。让我们一起来了解一下这种切换模式是如何实现的。
 ---
 
-RxJava 在链式调用的设计基础上，通过设置不同的调度器，可以灵活地在不同线程间切换并执行对应的 Task. 在本篇文章中，我们来了解一下这种切换模式是如何实现的。
+RxJava 在链式调用的设计基础上，通过设置不同的调度器，可以灵活地在不同线程间切换并执行对应的 Task。让我们一起来了解一下这种切换模式是如何实现的。
 
 ## Scheduler
 
-[Scheduler](http://reactivex.io/RxJava/javadoc/io/reactivex/Scheduler.html) 是所有 RxJava 调度器的抽象父类，子类需要复写其 `createWorker()` 返回一个 [Worker](http://reactivex.io/RxJava/javadoc/io/reactivex/Scheduler.Worker.html) 实例，用来接受并执行 Task; 同时也可以复写其 `scheduleDirect()` 来决定如何将 Task 分配给不同的 Worker. 一个缩略版的 Scheduler 源码如下：
+[Scheduler](http://reactivex.io/RxJava/javadoc/io/reactivex/Scheduler.html) 是所有 RxJava 调度器的抽象父类，子类需要复写其 `createWorker()` 返回一个 [Worker](http://reactivex.io/RxJava/javadoc/io/reactivex/Scheduler.Worker.html) 实例，用来接受并执行 Task；同时也可以复写其 `scheduleDirect()` 来决定如何将 Task 分配给不同的 Worker。一个缩略版的 Scheduler 源码如下：
 
 ```java
 public abstract class Scheduler {
@@ -17,7 +17,7 @@ public abstract class Scheduler {
   @NonNull
   public abstract Worker createWorker();
 
-  // 调度一次定时 Task, 细节封装在传入的 Runnable 里
+  // 调度一次定时 Task，细节封装在传入的 Runnable 里
   @NonNull
   public Disposable scheduleDirect(
     @NonNull Runnable run, long delay, @NonNull TimeUnit unit
@@ -25,7 +25,7 @@ public abstract class Scheduler {
     // 新建一个 Worker
     final Worker w = createWorker();
 
-    // 静态代理并封装我们想要执行的 Runnable, 具体实现可忽略
+    // 静态代理并封装我们想要执行的 Runnable，具体实现可忽略
     final Runnable decoratedRun
       = RxJavaPlugins.onSchedule(run);
     DisposeTask task = new DisposeTask(decoratedRun, w);
@@ -39,7 +39,7 @@ public abstract class Scheduler {
   public abstract static class Worker implements Disposable {
     ...
 
-    // 执行被分配的定时 Task;
+    // 执行被分配的定时 Task；
     // 注意，Worker 内部也可以维护一个自己的 Task 调度策略
     @NonNull
     public abstract Disposable schedule(
@@ -107,7 +107,7 @@ public class NewThreadWorker extends Scheduler.Worker
     @NonNull TimeUnit unit,
     @Nullable DisposableContainer parent
   ) {
-    // 静态代理并封装我们想要执行的 Runnable, 具体实现可忽略
+    // 静态代理并封装我们想要执行的 Runnable，具体实现可忽略
     Runnable decoratedRun = RxJavaPlugins.onSchedule(run);
     ScheduledRunnable sr =
       new ScheduledRunnable(decoratedRun, parent);
@@ -192,7 +192,7 @@ public final class ObservableSubscribeOn<T>
   public void subscribeActual(
     final Observer<? super T> observer
   ) {
-    // 静态代理传入的上游 Observer, 具体实现可忽略
+    // 静态代理传入的上游 Observer，具体实现可忽略
     final SubscribeOnObserver<T> parent =
       new SubscribeOnObserver<>(observer);
 
@@ -281,8 +281,8 @@ public final class ObservableSubscribeOn<T>
       // highlight-start
       // 直接创建一个新的 Worker 实例
       Scheduler.Worker w = scheduler.createWorker();
-      // source 对象是上游的 Observable,
-      // observer 对象是下游的 Observer;
+      // source 对象是上游的 Observable，
+      // observer 对象是下游的 Observer；
       // 此处通过创建一个 ObserveOnObserver 作为中间人角色，
       // 它订阅了 source 并在相关回调中调用 observer 的对应方法,
       // 仍然是静态代理模式的应用
