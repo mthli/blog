@@ -25,36 +25,39 @@
 #include <stdio.h>
 #include <time.h>
 
-int main() {
-  int sum = 0;
-  clock_t begin = clock();
+int main()
+{
+    int sum = 0;
+    clock_t begin = clock();
 
-  // 正常情况下的 for 循环，
-  // 需要连续迭代 100000000 次
-  for (int i = 0; i < 100000000; i++) {
-    sum += i;
-  }
+    // 正常情况下的 for 循环，
+    // 需要连续迭代 100000000 次
+    for (int i = 0; i < 100000000; i++)
+    {
+        sum += i;
+    }
 
-  clock_t end = clock();
-  double duration = (double) (end - begin) / CLOCKS_PER_SEC;
-  printf("normal, sum: %d, duration: %f\n", sum, duration);
+    clock_t end = clock();
+    double duration = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf("normal, sum: %d, duration: %f\n", sum, duration);
 
-  sum = 0;
-  begin = clock();
+    sum = 0;
+    begin = clock();
 
-  // 每次循环展开 5 次，
-  // 只用迭代 20000000 次即可
-  for (int i = 0; i < 100000000; i += 5) {
-    sum += i;
-    sum += i + 1;
-    sum += i + 2;
-    sum += i + 3;
-    sum += i + 4;
-  }
+    // 每次循环展开 5 次，
+    // 只用迭代 20000000 次即可
+    for (int i = 0; i < 100000000; i += 5)
+    {
+        sum += i;
+        sum += i + 1;
+        sum += i + 2;
+        sum += i + 3;
+        sum += i + 4;
+    }
 
-  end = clock();
-  duration = (double) (end - begin) / CLOCKS_PER_SEC;
-  printf("unroll, sum: %d, duration: %f\n", sum, duration);
+    end = clock();
+    duration = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf("unroll, sum: %d, duration: %f\n", sum, duration);
 
-  return 0;
+    return 0;
 }

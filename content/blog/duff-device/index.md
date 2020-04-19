@@ -17,18 +17,18 @@ description: 达夫设备 (Duff's Device) 可能是迄今为止最令人疑惑�
 // 需要连续迭代 100000000 次
 int sum = 0;
 for (int i = 0; i < 100000000; i++) {
-  sum += i;
+    sum += i;
 }
 
 // 每次循环展开 5 次，
 // 只用迭代 20000000 次即可
 int sum = 0;
 for (int i = 0; i < 100000000; i += 5) {
-  sum += i;
-  sum += i + 1;
-  sum += i + 2;
-  sum += i + 3;
-  sum += i + 4;
+    sum += i;
+    sum += i + 1;
+    sum += i + 2;
+    sum += i + 3;
+    sum += i + 4;
 }
 ```
 
@@ -49,9 +49,9 @@ send(to, from, count)
 register short *to, *from;
 register count;
 {
-  do
-    *to = *from++;
-  while (--count > 0);
+    do
+        *to = *from++;
+    while (--count > 0);
 }
 ```
 
@@ -64,17 +64,17 @@ send(to, from, count)
 register short *to, *from;
 register count;
 {
-  register n = (count + 7) / 8;
-  switch (count % 8) {
-  case 0: do { *to = *from++;
-  case 7:      *to = *from++;
-  case 6:      *to = *from++;
-  case 5:      *to = *from++;
-  case 4:      *to = *from++;
-  case 3:      *to = *from++;
-  case 2:      *to = *from++;
-  case 1:      *to = *from++;
-          } while (--n > 0);
+    register n = (count + 7) / 8;
+    switch (count % 8) {
+    case 0: do { *to = *from++;
+    case 7:      *to = *from++;
+    case 6:      *to = *from++;
+    case 5:      *to = *from++;
+    case 4:      *to = *from++;
+    case 3:      *to = *from++;
+    case 2:      *to = *from++;
+    case 1:      *to = *from++;
+            } while (--n > 0);
   }
 }
 ```
@@ -94,34 +94,34 @@ send(to, from, count)
 register short *to, *from;
 register count;
 {
-  register n = (count + 7) / 8;
+    register n = (count + 7) / 8;
 
-  // 循环次数不一定能被展开次数整除，
-  // 所以需要额外处理整除不尽的余数；
-  // 此处 switch 没有 break 语句，
-  // 会自动从余数匹配的 case 向下遍历执行 (falls through)
-  switch (count % 8) {
-    case 0: *to = *from++;
-    case 7: *to = *from++;
-    case 6: *to = *from++;
-    case 5: *to = *from++;
-    case 4: *to = *from++;
-    case 3: *to = *from++;
-    case 2: *to = *from++;
-    case 1: *to = *from++;
-  }
+    // 循环次数不一定能被展开次数整除，
+    // 所以需要额外处理整除不尽的余数；
+    // 此处 switch 没有 break 语句，
+    // 会自动从余数匹配的 case 向下遍历执行 (falls through)
+    switch (count % 8) {
+        case 0: *to = *from++;
+        case 7: *to = *from++;
+        case 6: *to = *from++;
+        case 5: *to = *from++;
+        case 4: *to = *from++;
+        case 3: *to = *from++;
+        case 2: *to = *from++;
+        case 1: *to = *from++;
+    }
 
-  // 每次循环展开 8 次
-  while (--n > 0) {
-    *to = *from++;
-    *to = *from++;
-    *to = *from++;
-    *to = *from++;
-    *to = *from++;
-    *to = *from++;
-    *to = *from++;
-    *to = *from++;
-  }
+    // 每次循环展开 8 次
+    while (--n > 0) {
+        *to = *from++;
+        *to = *from++;
+        *to = *from++;
+        *to = *from++;
+        *to = *from++;
+        *to = *from++;
+        *to = *from++;
+        *to = *from++;
+    }
 }
 ```
 
@@ -140,4 +140,4 @@ themselves do not alter the flow of control, which continues unimpeded across th
 
 当达夫设备开始运行时，会先根据 switch 匹配到对应的 case 语句，由于没有声明 break 所以会一路向下执行 (falls through) 直到被 while 捕获，进入循环逻辑。这里有一份模拟达夫设备的 C 代码 [duff-like.c](https://github.com/mthli/blog/blob/master/content/blog/duff-device/duff-like.c) 以及对应的汇编文件 [duff-like.s](https://github.com/mthli/blog/blob/master/content/blog/duff-device/duff-like.s)，读者可以很轻松地验证这段运行逻辑，关注 `ja`, `jg`, `jmp`, `jmpq` 之类的跳转指令即可，这里就不展开了。
 
-达夫设备是特定时期的特定产物，现在几乎不能见到这样的循环展开实现了。但正如文章开头所述，理解达夫设备有助于我们实现一种朴素的协程——笔者将在后续文章中介绍这种协程时如何实现的，敬请期待。
+达夫设备是特定时期的特定产物，现在几乎不能见到这样的循环展开实现了。但正如文章开头所述，理解达夫设备有助于我们实现一种朴素的协程，感兴趣的同学可以参见笔者的这篇译文 [使用 C 语言实现协程](https://mthli.xyz/coroutines-in-c/) 。
