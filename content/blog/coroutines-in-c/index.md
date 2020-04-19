@@ -4,7 +4,7 @@ date: "2020-04-16T16:34:05+00:00"
 description: 本文译自 PuTTY 的作者 Simon Tatham 的文章 Coroutines in C，作者在文中介绍了一种基于达夫设备的思想实现的协程。让我们一起来了解一下这种协程时如何实现的。
 ---
 
-本文译自 PuTTY 的作者 Simon Tatham 的文章 [Coroutines in C](https://www.chiark.greenend.org.uk/~sgtatham/coroutines.html)，作者在文中介绍了一种基于达夫设备的思想实现的协程。注意，*斜体部分为翻译过程中的补充*。
+本文译自 PuTTY 的作者 Simon Tatham 的文章 [Coroutines in C](https://www.chiark.greenend.org.uk/~sgtatham/coroutines.html)，作者在文中介绍了一种基于 [达夫设备](https://mthli.xyz/duff-device/) 的思想实现的协程。注意，*斜体部分为翻译过程中的补充*。
 
 ## 介绍
 
@@ -157,7 +157,7 @@ int function(void) {
 
 ## 达夫设备
 
-著名的达夫设备 (Duff's Device) 代码片段揭示了 C 语言的这样一个事实，即 case 语句在子代码块中仍然可以和 switch 语句相匹配*（译者注，关于达夫设备的介绍可参见 [深入理解达夫设备](https://mthli.xyz/duff-device/)）*。Tom Duff 使用这个技巧来优化循环展开的逻辑：
+著名的达夫设备 (Duff's Device) 代码片段揭示了 C 语言的这样一个事实，即 case 语句在子代码块中仍然可以和 switch 语句相匹配*（译者注，关于达夫设备的介绍可参见译者的另一篇文章 [深入理解达夫设备](https://mthli.xyz/duff-device/)）*。Tom Duff 使用这个技巧来优化循环展开的逻辑：
 
 ```c
 switch (count % 8) {
