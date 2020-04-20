@@ -4,7 +4,7 @@ date: "2020-04-16T16:34:05+00:00"
 description: 本文译自 PuTTY 的作者 Simon Tatham 的文章 Coroutines in C，作者在文中介绍了一种基于达夫设备的思想实现的协程。让我们一起来了解一下这种协程时如何实现的。
 ---
 
-本文译自 PuTTY 的作者 Simon Tatham 的文章 [Coroutines in C](https://www.chiark.greenend.org.uk/~sgtatham/coroutines.html)，作者在文中介绍了一种基于 [达夫设备](https://mthli.xyz/duff-device/) 的思想实现的协程。注意，*斜体部分为翻译过程中的补充*。
+本文译自 PuTTY 的作者 Simon Tatham 的文章 [Coroutines in C](https://www.chiark.greenend.org.uk/~sgtatham/coroutines.html)，作者在文中介绍了一种基于 [达夫设备](https://mthli.xyz/duff-device/) 的思想实现的协程。注意，*斜体部分为翻译过程中的补充*。考虑到译者的英文水平有限，部分语句的翻译与原文略有出入，强烈建议读者结合原文观看。
 
 ## 介绍
 
