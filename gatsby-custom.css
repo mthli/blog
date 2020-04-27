@@ -1,3 +1,16 @@
+body {
+  --text-color: hsla(0, 0%, 0%, 0.9);
+  --background-color: white;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  transition: background 0.4s ease;
+}
+
+body.dark {
+  --text-color: #E0E0E0;
+  --background-color: #212121;
+}
+
 .gatsby-highlight pre[class*="language-"] {
   border-radius: 0.3em;
   margin: 0 0 1.75em;

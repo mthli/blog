@@ -25,7 +25,7 @@ const ThemeSwitch = () => (
               .dayNight input + div {
                 position: relative;
                 border-radius: 50%;
-                box-shadow: inset 16px -16px 0 0 #000;
+                box-shadow: inset 16px -16px 0 0 var(--text-color);
                 width: 36px;
                 height: 36px;
                 transform: scale(1) rotate(-2deg);
@@ -50,25 +50,25 @@ const ThemeSwitch = () => (
                 border-radius: 50%;
                 margin: -4px 0 0 -4px;
                 box-shadow:
-                  0 -23px 0 #fff,
-                  0  23px 0 #fff,
-                   23px 0 0 #fff,
-                  -23px 0 0 #fff,
-                    15px 15px 0 #fff,
-                   -15px 15px 0 #fff,
-                   15px -15px 0 #fff,
-                  -15px -15px 0 #fff;
+                  0 -23px 0 var(--text-color),
+                  0  23px 0 var(--text-color),
+                   23px 0 0 var(--text-color),
+                  -23px 0 0 var(--text-color),
+                    15px 15px 0 var(--text-color),
+                   -15px 15px 0 var(--text-color),
+                   15px -15px 0 var(--text-color),
+                  -15px -15px 0 var(--text-color);
                 content: '';
                 transform: scale(0);
                 transition: all 0.3s ease;
               }
               .dayNight input:checked + div {
-                box-shadow: inset 32px -32px 0 0 #fff;
+                box-shadow: inset 32px -32px 0 0 var(--text-color);
                 transform: scale(0.5) rotate(0deg);
                 transition: transform 0.3s ease 0.1s, box-shadow 0.2s ease 0s;
               }
               .dayNight input:checked + div:before {
-                background: #fff;
+                background: var(--text-color);
                 transition: background 0.3s ease 0.1s;
               }
               .dayNight input:checked + div:after {
