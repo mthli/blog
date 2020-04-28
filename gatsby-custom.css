@@ -1,4 +1,5 @@
 body {
+  --hr-color: hsla(0, 0%, 0%, 0.2);
   --link-color: #dd4a68;
   --text-color: hsla(0, 0%, 0%, 0.9);
   --background-color: white;
@@ -8,9 +9,15 @@ body {
 }
 
 body.dark {
-  --link-color: #dd4a68;
-  --text-color: #E0E0E0;
+  --hr-color: #424242;
+  --link-color: #dc617a;
+  --text-color: #e0e0e0;
   --background-color: #212121;
+}
+
+.dark blockquote {
+  color: #808080;
+  border-left-color: var(--text-color);
 }
 
 .gatsby-highlight pre[class*="language-"] {
@@ -25,6 +32,10 @@ body.dark {
   padding-left: 1em;
   padding-right: 1em;
   background-color: #ffeebb;
+}
+
+.dark .gatsby-highlight-code-line {
+  background-color: #323232;
 }
 
 .gatsby-resp-image-figcaption {
