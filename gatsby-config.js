@@ -1,90 +1,95 @@
 module.exports = {
   siteMetadata: {
-    title: `mthli.xyz`,
-    author: `Matthew Lee`,
-    description: `Yet another blog of Matthew Lee 👀`,
-    siteUrl: `https://mthli.xyz`,
+    title: 'mthli.xyz',
+    author: 'Matthew Lee',
+    description: 'Yet another blog of Matthew Lee 👀',
+    siteUrl: 'https://mthli.xyz',
     social: {
-      twitter: `mth_li`,
+      twitter: 'mth_li',
     },
   },
   plugins: [
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: 'gatsby-source-filesystem',
       options: {
         path: `${__dirname}/content/blog`,
-        name: `blog`,
+        name: 'blog',
       },
     },
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: 'gatsby-source-filesystem',
       options: {
         path: `${__dirname}/content/assets`,
-        name: `assets`,
+        name: 'assets',
       },
     },
     {
-      resolve: `gatsby-transformer-remark`,
+      resolve: 'gatsby-transformer-remark',
       options: {
         plugins: [
           {
-            resolve: `gatsby-remark-external-links`,
+            resolve: 'gatsby-remark-external-links',
             options: {
-              rel: "noopener noreferrer",
+              rel: 'noopener noreferrer',
             },
           },
           {
-            resolve: `gatsby-remark-images`,
+            resolve: 'gatsby-remark-images',
             options: {
               linkImagesToOriginal: false,
               showCaptions: true,
             },
           },
           {
-            resolve: `gatsby-remark-responsive-iframe`,
+            resolve: 'gatsby-remark-images-zoom',
             options: {
-              wrapperStyle: `margin-bottom: 1.0725rem`,
+              background: 'var(--background-color)',
             },
           },
-          `gatsby-remark-copy-linked-files`,
-          `gatsby-remark-images-zoom`,
-          `gatsby-remark-prismjs`,
-          `gatsby-remark-smartypants`,
+          {
+            resolve: 'gatsby-remark-responsive-iframe',
+            options: {
+              wrapperStyle: 'margin-bottom: 1.0725rem',
+            },
+          },
+          'gatsby-remark-copy-linked-files',
+          'gatsby-remark-prismjs',
+          'gatsby-remark-smartypants',
         ],
       },
     },
-    `gatsby-transformer-sharp`,
+    'gatsby-transformer-sharp',
     /*
     {
-      resolve: `gatsby-plugin-google-analytics`,
+      resolve: 'gatsby-plugin-google-analytics',
       options: {
-        trackingId: `ADD YOUR TRACKING ID HERE`,
+        trackingId: 'ADD YOUR TRACKING ID HERE',
       },
     },
     */
     {
-      resolve: `gatsby-plugin-manifest`,
+      resolve: 'gatsby-plugin-manifest',
       options: {
-        name: `mthli.xyz`,
-        short_name: `mthli.xyz`,
-        start_url: `/`,
-        background_color: `#ffffff`,
-        display: `minimal-ui`,
-        icon: `content/assets/profile-pic.jpg`,
+        name: 'mthli.xyz',
+        short_name: 'mthli.xyz',
+        start_url: '/',
+        background_color: '#ffffff',
+        display: 'minimal-ui',
+        icon: 'content/assets/profile-pic.jpg',
       },
     },
     {
-      resolve: `gatsby-plugin-typography`,
+      resolve: 'gatsby-plugin-typography',
       options: {
-        pathToConfigModule: `src/utils/typography`,
+        pathToConfigModule: 'src/utils/typography',
       },
     },
-    `gatsby-plugin-dark-mode`,
-    `gatsby-plugin-feed`,
-    // `gatsby-plugin-offline`,
-    `gatsby-plugin-remove-serviceworker`,
-    `gatsby-plugin-react-helmet`,
-    `gatsby-plugin-sharp`,
-    `gatsby-plugin-styled-jsx`,
+    'gatsby-plugin-dark-mode',
+    'gatsby-plugin-feed',
+    // 'gatsby-plugin-offline',
+    'gatsby-plugin-remove-serviceworker',
+    'gatsby-plugin-react-helmet',
+    'gatsby-plugin-sharp',
+    'gatsby-plugin-styled-jsx',
   ],
 }
