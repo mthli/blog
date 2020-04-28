@@ -1,7 +1,8 @@
 // 默认字体
-import "typeface-montserrat"
-import "typeface-merriweather"
+import 'typeface-montserrat'
+import 'typeface-merriweather'
 
-// 代码高亮
-import "prismjs/themes/prism.css"
-import "./gatsby-custom.css"
+// 日夜间模式和代码高亮
+import './gatsby-custom.css'
+import './prism-light.css'
+import './prism-dark.css'

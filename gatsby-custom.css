@@ -1,4 +1,5 @@
 body {
+  --link-color: #dd4a68;
   --text-color: hsla(0, 0%, 0%, 0.9);
   --background-color: white;
   color: var(--text-color);
@@ -7,6 +8,7 @@ body {
 }
 
 body.dark {
+  --link-color: #dd4a68;
   --text-color: #E0E0E0;
   --background-color: #212121;
 }
