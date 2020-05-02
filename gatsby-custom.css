@@ -20,6 +20,10 @@ body.dark {
   border-left-color: var(--text-color);
 }
 
+.gatsby-highlight + p {
+  margin-top: 1.75em;
+}
+
 .gatsby-highlight pre[class*="language-"] {
   border-radius: 0.3em;
   margin: 0 0 1.75em;
