@@ -1,12 +1,10 @@
 ---
 title: RxJava 链式调用原理
-date: "2020-02-13T12:56:41+00:00"
+date: '2020-02-13T12:56:41+00:00'
 description: RxJava 的链式调用需要保持顺序关系。
 ---
 
-RxJava 采用了类似 Stream API 的链式调用设计，提供了 filter, map, observeOn 等常用的的操作符。与 Builder 模式对调用方法的顺序没有要求不同，RxJava 的操作符调用需要保持顺序关系。让我们一起来了解一下这种顺序关系是如何实现的。
-
-一个典型的链式调用场景如下：
+RxJava 采用了类似 Stream API 的链式调用设计，提供了 filter, map, observeOn 等常用的的操作符。与 Builder 模式对调用方法的顺序没有要求不同，RxJava 的操作符调用需要保持顺序关系。一个典型的链式调用场景如下：
 
 ```java
 Observable
