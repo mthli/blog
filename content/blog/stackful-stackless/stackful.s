@@ -34,8 +34,8 @@ swap_regs:
     movl 4(%esp), %ecx
 
     //  %esp  存储的是当前调用栈的顶部所在的地址；
-    // (%esp) 是顶部地址所指向的内存区域，用于存储 return address；
-    // 将当前 return address 存储到 current
+    // (%esp) 是顶部地址所指向的内存区域存储的值，
+    // 将这个值存储为 current 的 return address
     movl (%esp), %eax
     movl %eax, 16(%ecx)
 
@@ -49,7 +49,7 @@ swap_regs:
     movl 8(%esp), %ecx
 
     //  %esp  存储的是当前调用栈的顶部所在的地址；
-    // (%esp) 是顶部地址所指向的内存区域，用于存储 return address；
+    // (%esp) 是顶部地址所指向的内存区域存储的值，
     // 将 next 的 return address 写入到该内存区域
     movl 16(%ecx), %eax
     movl %eax, (%esp)
