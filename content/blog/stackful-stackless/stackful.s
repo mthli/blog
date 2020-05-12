@@ -22,42 +22,44 @@
  * SOFTWARE.
  */
 
-    .globl swap_regs
+    .globl swap_ctx
 #if !defined(__APPLE__)
-    .type  swap_regs, @function
+    .type  swap_ctx, @function
 #endif
 
-// extern void swap_regs(char **current, char **next);
-swap_regs:
+// extern void swap_ctx(char **current, char **next);
+swap_ctx:
 
-    // 获取 swap_regs 的第一个参数 char **current
-    movl 4(%esp), %ecx
-
-    //  %esp  存储的是当前调用栈的顶部所在的地址；
-    // (%esp) 是顶部地址所指向的内存区域存储的值，
-    // 将这个值存储为 current 的 return address
-    movl (%esp), %eax
-    movl %eax, 16(%ecx)
+    // 获取 swap_ctx 的第一个参数 char **current
+    movl 4(%esp), %eax
 
     // 依次将各个寄存器的值存储到 current
-    movl %ebp, 12(%ecx)
-    movl %esi,  8(%ecx)
-    movl %edi,  4(%ecx)
-    movl %ebx,  0(%ecx)
+    movl %esp, 20(%eax)
+    movl %ebp, 16(%eax)
+    movl %esi, 12(%eax)
+    movl %edi,  8(%eax)
+    movl %ebx,  4(%eax)
 
-    // 获取 swap_regs 的第二个参数 char **next
-    movl 8(%esp), %ecx
-
-    //  %esp  存储的是当前调用栈的顶部所在的地址；
+    //  %esp  存储的是当前调用栈的顶部所在的地址，
     // (%esp) 是顶部地址所指向的内存区域存储的值，
-    // 将 next 的 return address 写入到该内存区域
-    movl 16(%ecx), %eax
-    movl %eax, (%esp)
+    // 将这个值存储为 current 的 return address
+    movl (%esp), %ecx
+    movl %ecx, 0(%eax)
+
+    // 获取 swap_ctx 的第二个参数 char **next
+    movl 8(%esp), %eax
 
     // 依次将 next 存储的值写入各个寄存器
-    movl 12(%ecx), %ebp
-    movl  8(%ecx), %esi
-    movl  4(%ecx), %edi
-    movl  0(%ecx), %ebx
+    movl 20(%eax), %esp
+    movl 16(%eax), %ebp
+    movl 12(%eax), %esi
+    movl  8(%eax), %edi
+    movl  4(%eax), %ebx
+
+    //  %esp  存储的是当前调用栈的顶部所在的地址，
+    // (%esp) 是顶部地址所指向的内存区域存储的值，
+    // 将 next 的 return address 写入到该内存区域
+    movl 0(%eax), %ecx
+    movl %ecx, (%esp)
 
     ret

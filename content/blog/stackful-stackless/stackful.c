@@ -26,47 +26,70 @@
 #include <stdlib.h>
 #include <string.h>
 
-// *(REGS + 0) 存储 ebx
-// *(REGS + 1) 存储 edi
-// *(REGS + 2) 存储 esi
-// *(REGS + 3) 存储 ebp
-// *(REGS + 4) 存储 return address
-char **MAIN_REGS;
-char **FUNC_REGS;
+// *(CTX + 0) 存储 return address
+// *(CTX + 1) 存储 ebx
+// *(CTX + 2) 存储 edi
+// *(CTX + 3) 存储 esi
+// *(CTX + 4) 存储 ebp
+// *(CTX + 5) 存储 esp
+char **MAIN_CTX;
+char **FUNC_CTX_1;
+char **FUNC_CTX_2;
+
+// 用于模拟切换协程的上下文
+int YIELD_COUNT;
 
 // 切换上下文，具体参见 stackful.s 的注释
-extern void swap_regs(char **current, char **next);
+extern void swap_ctx(char **current, char **next);
 
-// 尝试在这个嵌套函数中切换上下文
-void nest() {
-    // 暂停 func() 然后切换到 main() 执行
-    swap_regs(FUNC_REGS, MAIN_REGS);
+char **init_ctx(char *func) {
+    // 动态申请 1kb 内存作为栈帧空间
+    size_t size = sizeof(char *) * 1024;
+    char **ctx = malloc(size);
+    memset(ctx, 0, size);
+    // 将 func 的地址作为栈帧 return address 的初始值
+    *(ctx + 0) = (char *) func;
+    // 将 ctx 的内存地址作为栈帧顶部地址的初始值
+    *(ctx + 5) = (char *) ctx;
+    return ctx;
+}
+
+// 因为我们只有三个协程（其中一个是主协程，
+// 所以这里简单用 switch 来模拟调度器切换上下文了
+void yield() {
+    switch ((YIELD_COUNT++) % 3) {
+    case 0:
+        swap_ctx(MAIN_CTX, FUNC_CTX_1);
+        break;
+    case 1:
+        swap_ctx(FUNC_CTX_1, FUNC_CTX_2);
+        break;
+    case 2:
+        swap_ctx(FUNC_CTX_2, MAIN_CTX);
+        break;
+    default:
+        // DO NOTHING
+        break;
+    }
 }
 
 void func() {
+    int tag = rand() % 100;
     for (int i = 0; i < 3; i++) {
-        printf("func, index: %d\n", i);
-        nest(); // 尝试在这个嵌套函数中切换上下文
+        printf("func, tag: %d, index: %d\n", tag, i);
+        yield();
     }
 }
 
 int main() {
-    // 初始化 main() 的上下文存储空间
-    MAIN_REGS = malloc(sizeof(char *) * 5);
-    memset(MAIN_REGS, 0, sizeof(char *) * 5);
-    // 一开始将 main() 的入口地址放在 return address 上
-    *(MAIN_REGS + 4) = (char *) main;
+    MAIN_CTX = init_ctx((char *) main);
+    FUNC_CTX_1 = init_ctx((char *) func);
+    FUNC_CTX_2 = init_ctx((char *) func);
 
-    // 初始化 func() 的上下文存储空间
-    FUNC_REGS = malloc(sizeof(char *) * 5);
-    memset(FUNC_REGS, 0, sizeof(char *) * 5);
-    // 一开始将 func() 的入口地址放在 return address 上
-    *(FUNC_REGS + 4) = (char *) func;
-
+    int tag = rand() % 100;
     for (int i = 0; i < 3; i++) {
-        printf("main, index: %d\n", i);
-        // 暂停 main() 然后切换到 func() 执行
-        swap_regs(MAIN_REGS, FUNC_REGS);
+        printf("main, tag: %d, index: %d\n", tag, i);
+        yield();
     }
 
     return 0;
