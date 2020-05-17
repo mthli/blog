@@ -26,6 +26,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+// 编译
+// gcc -m32 stackful.c stackful.s
+
 // *(CTX + 0) 存储 return address
 // *(CTX + 1) 存储 ebx
 // *(CTX + 2) 存储 edi
@@ -33,6 +36,7 @@
 // *(CTX + 4) 存储 ebp
 // *(CTX + 5) 存储 esp
 char **MAIN_CTX;
+char **NEST_CTX;
 char **FUNC_CTX_1;
 char **FUNC_CTX_2;
 
@@ -47,24 +51,28 @@ char **init_ctx(char *func) {
     size_t size = sizeof(char *) * 1024;
     char **ctx = malloc(size);
     memset(ctx, 0, size);
-    // 将 func 的地址作为栈帧 return address 的初始值
+    // 将 func 的地址作为其栈帧 return address 的初始值，
+    // 当 func 第一次被调度时，将从其入口处开始执行
     *(ctx + 0) = (char *) func;
-    // 将 ctx 的内存地址作为栈帧顶部地址的初始值
+    // 将 ctx 的内存地址作为其栈帧顶部地址的初始值
     *(ctx + 5) = (char *) ctx;
     return ctx;
 }
 
-// 因为我们只有三个协程（其中一个是主协程，
+// 因为我们只有 4 个协程（其中一个是主协程，
 // 所以这里简单用 switch 来模拟调度器切换上下文了
 void yield() {
-    switch ((YIELD_COUNT++) % 3) {
+    switch ((YIELD_COUNT++) % 4) {
     case 0:
-        swap_ctx(MAIN_CTX, FUNC_CTX_1);
+        swap_ctx(MAIN_CTX, NEST_CTX);
         break;
     case 1:
-        swap_ctx(FUNC_CTX_1, FUNC_CTX_2);
+        swap_ctx(NEST_CTX, FUNC_CTX_1);
         break;
     case 2:
+        swap_ctx(FUNC_CTX_1, FUNC_CTX_2);
+        break;
+    case 3:
         swap_ctx(FUNC_CTX_2, MAIN_CTX);
         break;
     default:
@@ -73,7 +81,21 @@ void yield() {
     }
 }
 
+void nest_yield() {
+    yield();
+}
+
+void nest() {
+    // 随机生成一个整数作为 tag
+    int tag = rand() % 100;
+    for (int i = 0; i < 3; i++) {
+        printf("nest, tag: %d, index: %d\n", tag, i);
+        nest_yield();
+    }
+}
+
 void func() {
+    // 随机生成一个整数作为 tag
     int tag = rand() % 100;
     for (int i = 0; i < 3; i++) {
         printf("func, tag: %d, index: %d\n", tag, i);
@@ -83,6 +105,11 @@ void func() {
 
 int main() {
     MAIN_CTX = init_ctx((char *) main);
+
+    // 证明 nest() 可以在其嵌套函数中被挂起
+    NEST_CTX = init_ctx((char *) nest);
+
+    // 证明同一个函数在不同的栈帧空间上运行
     FUNC_CTX_1 = init_ctx((char *) func);
     FUNC_CTX_2 = init_ctx((char *) func);
 
