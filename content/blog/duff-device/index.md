@@ -138,6 +138,6 @@ themselves do not alter the flow of control, which continues unimpeded across th
 
 达夫设备的巧妙之处在于，它巧妙地利用了 Labeled statements 不改变控制流的语法定义；而正常情况下我们会将 case 语句的作用域视作一个单独的代码块，仅仅是 code style 的最佳实践而已，并不是编译器强约束的。
 
-当达夫设备开始运行时，会先根据 switch 匹配到对应的 case 语句，由于没有声明 break 所以会一路向下执行 (falls through) 直到被 while 捕获，进入循环逻辑。这里有一份模拟达夫设备的 C 代码 [duff-like.c](https://github.com/mthli/blog/blob/master/content/blog/duff-device/duff-like.c) 以及对应的汇编文件 [duff-like.s](https://github.com/mthli/blog/blob/master/content/blog/duff-device/duff-like.s)，读者可以很轻松地验证这段运行逻辑，关注 `ja` 、`jg` 、`jmp` 、`jmpq` 之类的跳转指令即可，这里就不展开了。
+当达夫设备开始运行时，会先根据 switch 匹配到对应的 case 语句，由于没有声明 break 所以会一路向下执行 (falls through) 直到被 while 捕获，进入循环逻辑。这里有一份模拟达夫设备的 C 代码 [duff-like.c](https://github.com/mthli/blog/blob/master/content/blog/duff-device/duff-like.c) 以及对应的汇编文件 [duff-like.s](https://github.com/mthli/blog/blob/master/content/blog/duff-device/duff-like.s)，读者可以很轻松地验证运行逻辑，关注 `ja` 、`jg` 、`jmp` 、`jmpq` 之类的跳转指令即可，这里就不展开了。
 
 达夫设备是特定时期的特定产物，现在几乎不能见到这样的循环展开实现了。但正如文章开头所述，理解达夫设备有助于我们实现一种朴素的协程，感兴趣的同学可以参见笔者的这篇译文 [使用 C 语言实现协程](https://mthli.xyz/coroutines-in-c/)。
