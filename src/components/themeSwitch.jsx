@@ -18,7 +18,7 @@ const ThemeSwitch = () => {
               checked={theme === 'dark'}
               onChange={({ target: { checked } }) => toggleTheme(checked ? 'dark' : 'light')}
             />
-            <div></div>
+            <div />
             <style jsx>
               {`
                 .dayNight {

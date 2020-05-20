@@ -19,7 +19,7 @@ const Layout = ({ title, children }) => {
             textDecoration: 'none',
             color: 'inherit',
           }}
-          to={'/'}
+          to="/"
         >
           {title}
         </Link>
@@ -55,7 +55,10 @@ const Layout = ({ title, children }) => {
           }}
         >
           <div>
-            © {new Date().getFullYear()}, built with
+            ©
+            {' '}
+            {new Date().getFullYear()}
+            , built with
             {' '}
             <a target="_blank" rel="noopener noreferrer" href="https://www.gatsbyjs.org">Gatsby</a>
           </div>

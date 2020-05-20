@@ -1,8 +1,8 @@
-import React from "react"
-import Image from "gatsby-image"
-import { useStaticQuery, graphql } from "gatsby"
+import React from 'react'
+import Image from 'gatsby-image'
+import { useStaticQuery, graphql } from 'gatsby'
 
-import { rhythm } from "../utils/typography"
+import { rhythm } from '../utils/typography'
 
 const Bio = () => {
   const data = useStaticQuery(graphql`
@@ -29,7 +29,7 @@ const Bio = () => {
   return (
     <div
       style={{
-        display: `flex`,
+        display: 'flex',
         marginBottom: rhythm(2),
       }}
     >
@@ -41,19 +41,19 @@ const Bio = () => {
           marginBottom: 0,
           minWidth: 56,
           minHeight: 56,
-          borderRadius: `100%`,
+          borderRadius: '100%',
         }}
         imgStyle={{
-          borderRadius: `50%`,
+          borderRadius: '50%',
         }}
       />
       <div>
         Yet another blog of
-        {` `}
+        {' '}
         <a target="_blank" rel="noopener noreferrer" href={`https://twitter.com/${social.twitter}`}>
           Matthew Lee
         </a>
-        {` `}
+        {' '}
         👀
         <br />
         Full-Stack Developer, good at Android 🤖️
