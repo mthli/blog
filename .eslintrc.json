@@ -6,6 +6,7 @@
     "plugin:react-hooks/recommended"
   ],
   "rules": {
-    "semi": "off"
+    "semi": "off",
+    "react/prop-types": "off"
   }
 }
