@@ -8,48 +8,46 @@ RxJava 采用了类似 Stream API 的链式调用设计，提供了 filter, map,
 
 ```java
 Observable
-  .create(...)
-  .filter(...)
-  .map(...)
-  .observeOn(...)
-  .subscribe(...)
+    .create(...)
+    .filter(...)
+    .map(...)
+    .observeOn(...)
+    .subscribe(...)
 ```
 
 链式调用从 `subscribe()` 开始被触发，我们来看一下对应的源码：
 
 ```java
 public abstract class Observable<T>
-  implements ObservableSource<T> {
-  ...
-
-  public final void subscribe(Observer<? super T> observer) {
+    implements ObservableSource<T> {
     ...
-    try {
-      ...
-      subscribeActual(observer); // highlight-line
-    } catch (NullPointerException e) { // NOPMD
-      throw e;
-    } catch (Throwable e) {
-      ...
-    }
-  }
 
-  protected abstract void subscribeActual(
-    Observer<? super T> observer);
+    public final void subscribe(Observer<? super T> observer) {
+        ...
+        try {
+            ...
+            subscribeActual(observer); // highlight-line
+        } catch (NullPointerException e) { // NOPMD
+            throw e;
+        } catch (Throwable e) {
+            ...
+        }
+    }
+
+    protected abstract void subscribeActual(
+        Observer<? super T> observer);
 }
 ```
 
 可以看到 `subscribe()` 实际调用的是 `subscribeActual()` 的具体实现。而 Observable 的子类有 ObservableFilter, ObservableMap, ObservableObserveOn 等。聪明的你肯定想到了，这些子类显然与对应的操作符有关。以 filter 为例：
 
 ```java
-public final Observable<T> filter(
-  Predicate<? super T> predicate
-) {
+public final Observable<T> filter(Predicate<? super T> predicate) {
   ...
-  return RxJavaPlugins.onAssembly(
-    // highlight-next-line
-    new ObservableFilter<T>(this, predicate)
-  );
+    return RxJavaPlugins.onAssembly(
+        // highlight-next-line
+        new ObservableFilter<T>(this, predicate)
+    );
 }
 ```
 
@@ -58,16 +56,16 @@ public final Observable<T> filter(
 ```java
 // 最后被执行
 ObservableObserveOn.subscribeActual() {
-  // 第三个被执行
-  ObservableMap.subscribeActual() {
-    // 第二个被执行
-    ObservableFilter.subscribeActual() {
-      // 嵌套最深的最先被执行
-      ObservableCreate.subscribeActual() {
-        // DO SOMETHING
-      }
+    // 第三个被执行
+    ObservableMap.subscribeActual() {
+        // 第二个被执行
+        ObservableFilter.subscribeActual() {
+            // 嵌套最深的最先被执行
+            ObservableCreate.subscribeActual() {
+                // DO SOMETHING
+            }
+        }
     }
-  }
 }
 ```
 
