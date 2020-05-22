@@ -85,7 +85,6 @@ module.exports = {
         pathToConfigModule: 'src/utils/typography',
       },
     },
-    'gatsby-plugin-dark-mode',
     'gatsby-plugin-feed',
     // 'gatsby-plugin-offline',
     'gatsby-plugin-remove-serviceworker',

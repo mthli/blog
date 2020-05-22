@@ -1,31 +1,27 @@
 import React from 'react'
 import { Link } from 'gatsby'
 
-import ThemeSwitch from './themeSwitch'
 import { rhythm } from '../utils/typography'
 
 const Layout = ({ title, children }) => {
   const header = (
-    <>
-      <h3
+    <h3
+      style={{
+        fontFamily: 'Montserrat, sans-serif',
+        marginTop: 0,
+      }}
+    >
+      <Link
         style={{
-          fontFamily: 'Montserrat, sans-serif',
-          marginTop: 0,
+          boxShadow: 'none',
+          textDecoration: 'none',
+          color: 'inherit',
         }}
+        to="/"
       >
-        <Link
-          style={{
-            boxShadow: 'none',
-            textDecoration: 'none',
-            color: 'inherit',
-          }}
-          to="/"
-        >
-          {title}
-        </Link>
-      </h3>
-      <ThemeSwitch />
-    </>
+        {title}
+      </Link>
+    </h3>
   )
 
   return (

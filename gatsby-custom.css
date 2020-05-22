@@ -8,18 +8,6 @@ body {
   transition: background 0.4s ease;
 }
 
-body.dark {
-  --hr-color: #424242;
-  --link-color: #dc617a;
-  --text-color: #e0e0e0;
-  --background-color: #212121;
-}
-
-.dark blockquote {
-  color: #808080;
-  border-left-color: var(--text-color);
-}
-
 .gatsby-highlight + p {
   margin-top: 1.75em;
 }
@@ -36,10 +24,6 @@ body.dark {
   padding-left: 1em;
   padding-right: 1em;
   background-color: #ffeebb;
-}
-
-.dark .gatsby-highlight-code-line {
-  background-color: #323232;
 }
 
 .gatsby-resp-image-figcaption {
