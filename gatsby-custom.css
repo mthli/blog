@@ -1,11 +1,5 @@
 body {
-  --hr-color: hsla(0, 0%, 0%, 0.2);
   --link-color: #dd4a68;
-  --text-color: hsla(0, 0%, 0%, 0.9);
-  --background-color: white;
-  color: var(--text-color);
-  background-color: var(--background-color);
-  transition: background 0.4s ease;
 }
 
 .gatsby-highlight + p {

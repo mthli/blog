@@ -8,9 +8,6 @@ Wordpress2015.overrideThemeStyles = () => ({
   'a.gatsby-resp-image-link': {
     boxShadow: 'none',
   },
-  hr: {
-    background: 'var(--hr-color)',
-  },
 })
 
 const typography = new Typography(Wordpress2015)
