@@ -1,45 +1,19 @@
 import React from 'react'
-import { Link } from 'gatsby'
 
+import Bio from './bio'
 import { rhythm } from '../utils/typography'
 
-const Layout = ({ title, children }) => {
-  const header = (
-    <h3
-      style={{
-        marginTop: 0,
-      }}
-    >
-      <Link
-        style={{
-          boxShadow: 'none',
-          textDecoration: 'none',
-          color: 'inherit',
-        }}
-        to="/"
-      >
-        {title}
-      </Link>
-    </h3>
-  )
-
+const Layout = ({ children }) => {
   return (
     <div
       style={{
         marginLeft: 'auto',
         marginRight: 'auto',
         maxWidth: rhythm(26),
-        padding: `${rhythm(1.5)} ${rhythm(3 / 4)}`,
+        padding: `${rhythm(2)} ${rhythm(3 / 4)}`,
       }}
     >
-      <header
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
-        {header}
-      </header>
+      <Bio />
       <main>{children}</main>
     </div>
   )
