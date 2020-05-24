@@ -6,9 +6,15 @@ body {
   margin-top: 1.75em;
 }
 
+/* 代码块 */
 .gatsby-highlight pre[class*="language-"] {
-  border-radius: 0.3em;
+  /* border-radius: 0.3em; */
   margin: 0 0 1.75em;
+}
+
+/* Inline */
+:not(pre) > code[class*="language-"] {
+  border-radius: unset;
 }
 
 .gatsby-highlight-code-line {
