@@ -74,7 +74,7 @@ module.exports = {
         name: 'mthli.xyz',
         short_name: 'mthli.xyz',
         start_url: '/',
-        background_color: '#ffffff',
+        background_color: 'var(--background-color)',
         display: 'minimal-ui',
         icon: 'content/assets/profile-pic.jpg',
       },

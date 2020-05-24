@@ -1,5 +1,6 @@
 body {
   --link-color: #cfeeeb;
+  --background-color: white;
 }
 
 .gatsby-highlight + p {
