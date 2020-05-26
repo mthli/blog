@@ -54,6 +54,7 @@ module.exports = {
             },
           },
           'gatsby-remark-copy-linked-files',
+          'gatsby-remark-katex',
           'gatsby-remark-prismjs',
           'gatsby-remark-smartypants',
         ],
