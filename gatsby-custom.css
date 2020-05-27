@@ -3,6 +3,21 @@ body {
   --background-color: white;
 }
 
+/* 目前用的主题是 Wordpress2015，代码中 rhythm(1) = 1.68rem */
+blockquote ol {
+  padding-left: 1.26rem;
+}
+
+@media only screen and (max-width:480px) {
+  blockquote ol {
+    padding-left: 0;
+  }
+}
+
+li {
+  margin-bottom: 0;
+}
+
 .gatsby-highlight + p {
   margin-top: 1.75em;
 }
