@@ -73,14 +73,18 @@ fun dfs(root: TreeNode?, target: Int): Boolean {
 
 读者应该不难想象，此时整棵 2-3 树仍然是自平衡的。更复杂的场景这里就不继续列举了。如果按照上述顺序构造一棵普通的的二叉查找树，则是不平衡的（右偏）。
 
-但构造一棵 2-3 平衡树的难度显然比构造一棵普通的二叉查找树高多了，我们还是希望构造过程相对简单。解决方案是把 3- 结点分裂为两个 2- 结点：
+但构造一棵 2-3 平衡树的成本远比构造一棵普通的二叉查找树要高得多，我们还是希望构造过程相对简单。解决方案是把 3- 结点分裂为两个 2- 结点：
 
 ![将两个 2- 结点之间的链接标记为红色](./3-to-2.png)
 
-我们只需要将 3- 结点分裂出的两个 2- 结点之间的链接标记为红色，其余正常的 2- 结点之间的链接都标记为黑色，是不是瞬间就有内味了？维基百科是将结点定义为红色或者黑色，而我们是将结点之间的边定义为红色或者黑色，事实上这是红黑树的一种等价定义：
+我们只需要将 3- 结点分裂出的两个 2- 结点之间的链接标记为红色，其余正常的 2- 结点之间的链接都标记为黑色，是不是瞬间就有内味了？维基百科是将结点定义为红色或者黑色，而我们是将结点之间的链接定义为红色或者黑色，事实上这是红黑树的一种等价定义：
 
 > 1. 红链接均为左链接
 > 2. 没有任何一个结点同时和两条红链接相连
 > 3. 叶子结点 (NIL) 到根结点的路径上的黑链接数相同，即完美黑色平衡
 
-满足上述三点的含有红黑链接的二叉查找树即是红黑树。TODO
+满足上述三点的含有红黑链接的二叉查找树即是红黑树。相对与 2-3 平衡树而言，我们稍微损失了一点平衡性（将 3- 节点分裂为两个 2- 节点），但换取到了构造过程的便利性。
+
+现在我们已经大概了解红黑树的来源了。至于如何构造一棵红黑树（左旋、右旋、颜色转换）则超出了本文的范围，感兴趣的读者可以自行研究。最后为什么是红黑树，不是绿黑树、黄蓝树？看看 Sedgewick 自己怎么说：
+
+> A lot of people ask why did we use the name red–black. Well, we invented this data structure, this way of looking at balanced trees, at Xerox PARC which was the home of the personal computer and many other innovations that we live with today entering[sic] graphic user interfaces, ethernet and object-oriented programmings[sic] and many other things. But one of the things that was invented there was laser printing and we were very excited to have nearby color laser printer that could print things out in color and out of the colors the red looked the best. So, that’s why we picked the color red to distinguish red links, the types of links, in three nodes. So, that’s an answer to the question for people that have been asking.
