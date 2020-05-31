@@ -66,6 +66,10 @@ const SEO = ({
           name: 'google-site-verification',
           content: 'M3XhpmAR-H4xgeNwBx6S-N4mQ4gRV2rVJSTIt5f3Rik',
         },
+        {
+          name: 'baidu-site-verification',
+          content: 'SsCjdRk5Ew',
+        },
       ].concat(meta)}
     />
   )
