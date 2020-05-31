@@ -1,17 +1,19 @@
 # Blog
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/2fa4fa62-6253-4858-b810-c12f3069e0c6/deploy-status)](https://app.netlify.com/sites/mthli/deploys)
+
 Yet another blog of myself 👀
 
 👉 <https://mthli.xyz>
 
 ## Archives
 
-- [RxJava 链式调用原理](https://mthli.xyz/rxjava-chain/)
-- [RxJava 线程切换原理](https://mthli.xyz/rxjava-scheduler/)
-- [深入理解达夫设备](https://mthli.xyz/duff-device/)
-- [使用 C 语言实现协程](https://mthli.xyz/coroutines-in-c/)
+- [重新认识红黑树](https://mthli.xyz/rethink-red-black-tree/)
 - [有栈协程与无栈协程](https://mthli.xyz/stackful-stackless/)
-- TBD
+- [使用 C 语言实现协程](https://mthli.xyz/coroutines-in-c/)
+- [深入理解达夫设备](https://mthli.xyz/duff-device/)
+- [RxJava 线程切换原理](https://mthli.xyz/rxjava-scheduler/)
+- [RxJava 链式调用原理](https://mthli.xyz/rxjava-chain/)
 
 ## License
 
