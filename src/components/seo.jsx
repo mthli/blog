@@ -35,6 +35,10 @@ const SEO = ({
           content: metaDescription,
         },
         {
+          property: 'og:type',
+          content: 'website',
+        },
+        {
           property: 'og:title',
           content: title,
         },
@@ -43,16 +47,12 @@ const SEO = ({
           content: metaDescription,
         },
         {
-          property: 'og:type',
-          content: 'website',
-        },
-        {
           name: 'twitter:card',
           content: 'summary',
         },
         {
           name: 'twitter:creator',
-          content: site.siteMetadata.author,
+          content: 'mth_li',
         },
         {
           name: 'twitter:title',
