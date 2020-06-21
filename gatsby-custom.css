@@ -1,6 +1,7 @@
 body {
   --link-color: #cfeeeb;
   --background-color: white;
+  font-variant-ligatures: none; /* 禁止连字 */
 }
 
 /* 目前用的主题是 Wordpress2015，代码中 rhythm(1) = 1.68rem */
