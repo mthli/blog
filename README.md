@@ -8,6 +8,7 @@ Yet another blog of myself 👀
 
 ## Archives
 
+- [双重检查锁的单例实现](https://mthli.xyz/double-checked-locking-singleton/)
 - [重新认识红黑树](https://mthli.xyz/rethink-red-black-tree/)
 - [有栈协程与无栈协程](https://mthli.xyz/stackful-stackless/)
 - [使用 C 语言实现协程](https://mthli.xyz/coroutines-in-c/)
