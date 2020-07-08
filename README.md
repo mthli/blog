@@ -8,6 +8,7 @@ Yet another blog of myself 👀
 
 ## Archives
 
+- [RecyclerView 性能优化](https://mthli.xyz/recyclerview-optimization/)
 - [双重检查锁的单例实现](https://mthli.xyz/double-checked-locking-singleton/)
 - [重新认识红黑树](https://mthli.xyz/rethink-red-black-tree/)
 - [有栈协程与无栈协程](https://mthli.xyz/stackful-stackless/)
