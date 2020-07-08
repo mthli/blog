@@ -1,7 +1,7 @@
 ---
 title: RecyclerView 性能优化
 date: '2020-07-02T13:09:22+00:00'
-description: 几个优化的小技巧。
+description: 几个优化小技巧。
 ---
 
 几年以前在开发 [知乎想法](http://yien.design/2018-06-zhihu-notions/) 的过程中，顺手开发了一个便于撰写 RecyclerView 卡片的脚手架 [zhihu/SugarAdapter](https://github.com/zhihu/SugarAdapter)。之所以称为「脚手架」是因为这个库除了使用 Java 注解在编译期自动生成 Adapter 的绑定代码之外，其他什么都没做。当你的卡片类型非常多的时候，你就知道手写绑定代码是多么痛苦的一件事。
