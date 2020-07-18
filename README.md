@@ -8,6 +8,7 @@ Yet another blog of myself 👀
 
 ## Archives
 
+- [触摸事件的分发与嵌套滚动](https://mthli.xyz/touch-nested-scrolling/)
 - [RecyclerView 性能优化](https://mthli.xyz/recyclerview-optimization/)
 - [双重检查锁的单例实现](https://mthli.xyz/double-checked-locking-singleton/)
 - [重新认识红黑树](https://mthli.xyz/rethink-red-black-tree/)
