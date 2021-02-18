@@ -93,15 +93,15 @@ public class Singleton3 {
 
 实际上 volatile 在此处的作用是**禁止指令重排**。借用网上大多数博客的说法，`sInstance = new Singleton3();` 并不是一个原子操作，而是会被分解为三个步骤：
 
-1. 为 Singleton3 实例分配内存空间
-2. 调用 Singleton3 的构造器
-3. 将内存空间指向 `sInstance`
+1. 为 Singleton3 实例分配内存空间。
+2. 调用 Singleton3 的构造器。
+3. 将内存空间指向 `sInstance`。
 
 在没有 volatile 修饰时，上述初始化步骤可能会被 JIT 优化为 1 → 3 → 2。于是可能会发生：
 
-1. 当第一个线程 A 执行初始化步骤 1 → 3 时，有另外一个线程 B 恰好执行到 #1 处
-2. 因为 `sInstance` 已经被指向了一块内存空间，所以 `sInstance != null` 会被直接返回
-3. 接着 B 尝试调用 `doSomething()` ，但由于 `sInstance` 还没有被构造完毕，可能会出错
+1. 当第一个线程 A 执行初始化步骤 1 → 3 时，有另外一个线程 B 恰好执行到 #1 处。
+2. 因为 `sInstance` 已经被指向了一块内存空间，所以 `sInstance != null` 会被直接返回。
+3. 接着 B 尝试调用 `doSomething()`，但由于 `sInstance` 还没有被构造完毕，可能会出错。
 
 ```java
 A  B

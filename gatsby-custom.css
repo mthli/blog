@@ -49,3 +49,9 @@ li {
   font-size: 0.75em;
   text-align: center;
 }
+
+.certer-small-image {
+  display: block;
+  margin: 0 auto;
+  max-width: 360px;
+}

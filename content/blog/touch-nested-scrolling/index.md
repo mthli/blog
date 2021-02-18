@@ -85,8 +85,8 @@ public abstract class ViewGroup {
 
 我们可以简单认为上图的布局为最外层 ScrollView + 个人动态 RecyclerView。基于之前触摸事件的分发，一定有一个 View 消费了触摸事件。以上图中的交互为例：
 
-1. 如果是 ScrollView，需要考虑当头部信息没有隐藏时，怎么拦截滚动而不是拦截点击。当头部信息已经隐藏时，则不应该拦截任何事件，全部传递给 RecyclerView；同时还需要考虑怎么把剩余的 fling 速度传递给 RecyclerView，保证体验的流畅性
-2. 如果是 RecyclerView，需要考虑当头部信息没有隐藏时，怎么同时联动 ScrollView。当头部信息已经隐藏时，则不需要联动
+1. 如果是 ScrollView，需要考虑当头部信息没有隐藏时，怎么拦截滚动而不是拦截点击。当头部信息已经隐藏时，则不应该拦截任何事件，全部传递给 RecyclerView；同时还需要考虑怎么把剩余的 fling 速度传递给 RecyclerView，保证体验的流畅性。
+2. 如果是 RecyclerView，需要考虑当头部信息没有隐藏时，怎么同时联动 ScrollView。当头部信息已经隐藏时，则不需要联动。
 
 稍有经验的读者都会看出，情况 1 无异于螳臂当车。对于情况 2，其实联动的原理非常简单：假设手指移动的距离为 dy；RecyclerView 在滚动之前，先询问父布局 ScrollView 是否需要消费 dy 中的一部分 dyS，接着自己再消费掉剩下的那部分 dyR；即 dy = dyS + dyR。
 

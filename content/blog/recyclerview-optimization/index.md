@@ -81,7 +81,7 @@ public final class ViewRootImpl {
 
 > NOTE that the inflated View hierarchy is NOT added to the parent. It is equivalent to calling LayoutInflater.inflate(int, ViewGroup, boolean) with attachToRoot set to false.
 
-即 AsyncLayoutInflater 解析出的布局是不会被添加到其父布局的。以下代码展示了 View 是获取 ViewRootImpl 的方法。因为解析出的布局没有被添加到父布局，mAttachInfo 为空，不存在 ViewRootImpl，自然也谈不上 `checkThread()` 。
+即 AsyncLayoutInflater 解析出的布局是不会被添加到其父布局的。以下代码展示了 View 是获取 ViewRootImpl 的方法。因为解析出的布局没有被添加到父布局，mAttachInfo 为空，不存在 ViewRootImpl，自然也谈不上 `checkThread()`。
 
 ```java
 public class View {

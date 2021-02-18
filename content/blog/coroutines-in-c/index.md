@@ -47,7 +47,7 @@ while (1) {
 
 两段代码都非常简单易懂。前者通过调用 `emit()` 每次产生一个字符；后者通过调用 `getchar()` 每次消费一个字符。只需要调用 `emit()` 和 `getchar()` 就可以传送数据了，所以 decompressor 产生的数据可以很轻易地传送到 parser 中。
 
-在很多现代操作系统中，你可以在两个进程或线程之间使用管道 (pipe) 传输数据。在 decompressor 的 `emit()` 向管道中写数据，在 parser 的 `getchar()` 从同一个管道中读数据。简单粗暴，同时也非常繁琐和浪费性能。尤其是在你不想因为要做类似的事就得把程序拆分为多线程时。
+在很多现代操作系统中，你可以在两个进程或线程之间使用管道（pipe）传输数据。在 decompressor 的 `emit()` 向管道中写数据，在 parser 的 `getchar()` 从同一个管道中读数据。简单粗暴，同时也非常繁琐和浪费性能。尤其是在你不想因为要做类似的事就得把程序拆分为多线程时。
 
 在本篇文章中，我为这类结构性问题提供一种极具创造性的解决方案。
 
@@ -120,7 +120,7 @@ void parser(int c) {
 
 所以我们真正需要的是能在 C 语言层面能够模拟 Knuth 的协程的 call 原语的能力。当然我们必须接受这样一个事实，在 C 语言层面，一个函数必然是 caller，而其他函数则是 callee。对于 caller 而言，我们没有任何问题；我们像原本那样写代码就行，当生产出（或者需要）一个字符时，直接调用其他函数就行。
 
-问题集中在 callee 这边。对于 callee 而言，我们需要一种「返回且继续」(return and continue) 的操作：从一个函数中返回，且当这个函数下次被调用时，从它上一次返回之后的地方开始执行。举个例子，就像我们需要实现这样一个函数：
+问题集中在 callee 这边。对于 callee 而言，我们需要一种「返回且继续」（return and continue）的操作：从一个函数中返回，且当这个函数下次被调用时，从它上一次返回之后的地方开始执行。举个例子，就像我们需要实现这样一个函数：
 
 ```c
 int function(void) {
@@ -151,13 +151,13 @@ int function(void) {
 }
 ```
 
-然后就可以了。我们需要在可能恢复控制流的地方设置 label：一个在函数的开头，另一个在 return 之后。我们使用一个 `state` 变量来保存函数调用的状态*（译者注，虽然 `state` 是在函数中被定义的，但它是一个 static 变量，只会被初始化一次，且生命周期超越了函数本身）*，它告诉我们应该使用哪个 label 来恢复控制流。在第一次 return 之前，我们将正确的 label 赋值给 `state` ；在之后任意次调用开始时，我们使用 switch 来决定该跳转到哪里。
+然后就可以了。我们需要在可能恢复控制流的地方设置 label：一个在函数的开头，另一个在 return 之后。我们使用一个 `state` 变量来保存函数调用的状态*（译者注，虽然 `state` 是在函数中被定义的，但它是一个 static 变量，只会被初始化一次，且生命周期超越了函数本身）*，它告诉我们应该使用哪个 label 来恢复控制流。在第一次 return 之前，我们将正确的 label 赋值给 `state`；在之后任意次调用开始时，我们使用 switch 来决定该跳转到哪里。
 
 不过这看起来依然很丑陋。最糟糕的地方在于，你需要手动地设置 label，并且需要保持 switch 语句和函数体的一致性。每当我们新增一个返回语句，我们都得新增一个 label 然后把它加入到 switch 中；每当我们删除一个返回语句，我们又得删除掉它对应的 label。这使得我们需要付出成倍的工作量。
 
 ## 达夫设备
 
-著名的达夫设备 (Duff's Device) 代码片段揭示了 C 语言的这样一个事实，即 case 语句在子代码块中仍然可以和 switch 语句相匹配*（译者注，关于达夫设备的介绍可参见译者的另一篇文章 [深入理解达夫设备](https://mthli.xyz/duff-device/)）*。Tom Duff 使用这个技巧来优化循环展开的逻辑：
+著名的达夫设备（Duff's Device）代码片段揭示了 C 语言的这样一个事实，即 case 语句在子代码块中仍然可以和 switch 语句相匹配*（译者注，关于达夫设备的介绍可参见译者的另一篇文章 [深入理解达夫设备](https://mthli.xyz/duff-device/)）*。Tom Duff 使用这个技巧来优化循环展开的逻辑：
 
 ```c
 switch (count % 8) {
@@ -189,7 +189,7 @@ int function(void) {
 }
 ```
 
-看起来不错。现在我们需要做的就是构造一些精选的宏，这样我们就能以合理的方式将血腥的 (gory) 细节隐藏起来：
+看起来不错。现在我们需要做的就是构造一些精选的宏，这样我们就能以合理的方式将血腥的（gory）细节隐藏起来：
 
 ```c
 #define crBegin static int state=0; switch(state) { case 0:
@@ -267,7 +267,7 @@ void parser(int c) {
 
 我们把 decompressor 和 parser 都重写为了 callee，但显然并不需要像之前重写的那样需要大规模重组代码。新的代码结构简直就是原始的代码结构的镜像。与晦涩难读的状态机代码相比，读者可以很轻易分辨出 decompressor 解压数据的逻辑和 parser 解析数据的逻辑。一旦你将心智模型迁移到新的模式上，控制流就很简单了：当 decompressor 有一个字符时，它便将其使用 `crReturn` 返回，并且等待在下一次需要字符时被调用。当 parser 需要一个新字符时，它便使用 `crReturn` 返回，并且等待有新字符时被再次调用，新字符以参数 `c` 的形式传入。
 
-但仍然有一些小的结构上的变化：`parser()` 现在将它自己的 `getchar()`（好吧，其实被改为了 `crReturn` ）从循环开始的地方移动到了循环结束的地方，这是因为第一个字符已经以参数 `c` 的形式被传入到函数中了。我们可以接受这种改变，不过如果你真的介意这种改变的话，我们可以强制要求在开始给 `parser()` 输入字符之前要先初始化。
+但仍然有一些小的结构上的变化：`parser()` 现在将它自己的 `getchar()`（好吧，其实被改为了 `crReturn`）从循环开始的地方移动到了循环结束的地方，这是因为第一个字符已经以参数 `c` 的形式被传入到函数中了。我们可以接受这种改变，不过如果你真的介意这种改变的话，我们可以强制要求在开始给 `parser()` 输入字符之前要先初始化。
 
 就像之前说的那样，我们没有必要使用这些协程宏把两段代码都重写了。重写其中一个即可，另一个则作为 caller 存在。
 
@@ -313,9 +313,9 @@ if (condition) goto LABEL2; else goto LABEL3;
 
 （当然啦，如果 C 语言有 Pascal 的 with 语句的话，我们就能使用宏将这一层间接寻址隐藏掉。真可惜。不过至少 C++ 程序员们可以通过类来隐式划分作用域，将协程和所有本地变量都作为类的成员来解决）
 
-这里有一份包含了预先定义好的协程宏的 C 语言头文件。文件中定义了两组宏，前缀分别是 `scr` 和 `ccr` 。`scr` 宏是本文中介绍的较为简单的宏实现，你可以和 static 变量搭配使用；`ccr` 宏则提供了可重入机制。完整的文档请参见头文件中的注释。
+这里有一份包含了预先定义好的协程宏的 C 语言头文件。文件中定义了两组宏，前缀分别是 `scr` 和 `ccr`。`scr` 宏是本文中介绍的较为简单的宏实现，你可以和 static 变量搭配使用；`ccr` 宏则提供了可重入机制。完整的文档请参见头文件中的注释。
 
-请注意，Visual C++ 6.0 看起来不太喜欢这种协程技巧，因为它默认的调试功能 (Program Database for Edit and Continue) 和 `__LINE__` 宏搭配在一起时，会表现出奇怪的行为。如果你想要使用 VC++ 6.0 编译包含协程的程序，你必须关掉 Edit and Continue 功能（在 Project Settings 里，点击 C/C++ 标签，接着点击 General 再点击 Debug info。随便选择一个除了 "Program Database for Edit and Continue" 之外的选项）。
+请注意，Visual C++ 6.0 看起来不太喜欢这种协程技巧，因为它默认的调试功能（Program Database for Edit and Continue）和 `__LINE__` 宏搭配在一起时，会表现出奇怪的行为。如果你想要使用 VC++ 6.0 编译包含协程的程序，你必须关掉 Edit and Continue 功能（在 Project Settings 里，点击 C/C++ 标签，接着点击 General 再点击 Debug info。随便选择一个除了 "Program Database for Edit and Continue" 之外的选项）。
 
 （这份头文件遵循 MIT 协议，所以你可以不受限制地在任何地方使用。如果你觉得 MIT 协议不适用于你要做的事，[给我发邮件吧](mailto://anakin@pobox.com)，我大概会给授予你额外的权限去做这件事）
 
@@ -326,5 +326,5 @@ if (condition) goto LABEL2; else goto LABEL3;
 ## 引用
 
 - Donald Knuth, The Art of Computer Programming, Volume 1. Addison-Wesley, ISBN 0-201-89683-4. Section 1.4.2 describes coroutines in the "pure" form.
-- http://www.lysator.liu.se/c/duffs-device.html 指向了 Tom Duff 自己对达夫设备的讨论。请注意，在讨论的底部，达夫可能已经独立发明了这种协程技巧，或者某种类似的东西。**Update, 2005-03-07：**达夫在一篇博客的评论中 [确认了这件事](http://brainwagon.org/2005/03/05/coroutines-in-c/#comment-1878) 。他所说的「使用 switch 的方式来实现状态机的中断」和我在文中所述的技巧是一样的。
+- http://www.lysator.liu.se/c/duffs-device.html 指向了 Tom Duff 自己对达夫设备的讨论。请注意，在讨论的底部，达夫可能已经独立发明了这种协程技巧，或者某种类似的东西。**Update, 2005-03-07：**达夫在一篇博客的评论中 [确认了这件事](http://brainwagon.org/2005/03/05/coroutines-in-c/#comment-1878)。他所说的「使用 switch 的方式来实现状态机的中断」和我在文中所述的技巧是一样的。
 - [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/) 是一个 Win32 平台下的 Telnet 和 SSH 客户端。其中 SSH 协议的代码实现就真实使用到了这种协程技巧。至少在我看来，这是我见过的在一个严肃的产品中使用过的最糟糕的 C 语言特性了。
