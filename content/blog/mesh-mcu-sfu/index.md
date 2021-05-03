@@ -4,7 +4,7 @@ date: '2020-12-31T03:07:05+00:00'
 description: 一般分为 Mesh、MCU、SFU 三种。
 ---
 
-*本文译自博客 [WebRTC beyond one-to-one communication](https://webrtchacks.com/webrtc-beyond-one-one)。建议读者结合原文观看。*
+*本文译自博客 [WebRTC beyond one-to-one communication](https://webrtchacks.com/webrtc-beyond-one-one)。建议读者结合原文观看。最新内容和勘误请参见笔者撰写的线上书籍[《WebRTC 学习指南》](https://webrtc.mthli.com/)。*
 
 WebRTC 及其点对点（Peer-to-Peer）的能力，使之非常适合一对一通信。但是当我和客户聊到一对一之外的场景，比如一对多、多对多，一个常见的问题便是该使用怎样的架构去实现。一些服务商希望复用他们网络中的 Multicast（多播）能力（对此我们做了一些有趣的实验），另一些则考虑使用基于 Simulcast（同步广播）的方式，还有一些考虑使用类似 MCU 混流的中心化处理方式，当然大多数人只是简单地希望能使用 Mesh（网络拓扑）的方式。
 

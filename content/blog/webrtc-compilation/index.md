@@ -4,6 +4,8 @@ date: '2021-01-29T06:27:12+00:00'
 description: 大约四个小时，需要保持耐心。
 ---
 
+*最新内容和勘误请参见笔者撰写的线上书籍[《WebRTC 学习指南》](https://webrtc.mthli.com/)。*
+
 在之前的几篇文章中，笔者介绍了 WebRTC 建立连接的一些背景知识，但不是全部。我们必须构建出一个 WebRTC 客户端才能更好地了解连接的细节。由于笔者是 Android 开发，因此本文将根据 [官方文档](https://webrtc.googlesource.com/src/+/refs/heads/master/docs/native-code/android/index.md) 编译到 Android，iOS 的编译方法可参见 [这个链接](https://webrtc.googlesource.com/src/+/refs/heads/master/docs/native-code/ios/index.md)。
 
 ## 搭建环境

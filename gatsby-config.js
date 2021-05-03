@@ -34,6 +34,14 @@ module.exports = {
             },
           },
           {
+            resolve: 'gatsby-remark-footnotes',
+            options: {
+              footnoteBackRefPreviousElementDisplay: 'inline',
+              footnoteBackRefDisplay: 'inline',
+              footnoteBackRefAnchorStyle: 'text-decoration: none;',
+            },
+          },
+          {
             resolve: 'gatsby-remark-images',
             options: {
               maxWidth: '1080px',
