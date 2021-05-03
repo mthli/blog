@@ -8,8 +8,9 @@ Yet another blog of myself 👀
 
 ## Archives
 
+- [SDP 会话描述介绍](https://mthli.xyz/sdp-introduction/)
 - [WebRTC 编译指南](https://mthli.xyz/webrtc-compilation/)
-- [WebRTC 多人会议服务端架构](https://mthli.xyz/mesh-mcu-sfu/)
+- [多人会议服务端架构](https://mthli.xyz/mesh-mcu-sfu/)
 - [ICE 交互流程介绍](https://mthli.xyz/ice-stun-turn/)
 - [P2P 打洞原理](https://mthli.xyz/p2p-hole-punching/)
 - [WebRTC 入门介绍](https://mthli.xyz/webrtc-introduction/)

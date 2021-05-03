@@ -1,5 +1,5 @@
 ---
-title: WebRTC 多人会议服务端架构
+title: 多人会议服务端架构
 date: '2020-12-31T03:07:05+00:00'
 description: 一般分为 Mesh、MCU、SFU 三种。
 ---
