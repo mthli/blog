@@ -1,60 +1,60 @@
 ---
-title: ICE, STUN, TURN
+title: ICE 交互流程介绍
 date: '2020-12-04T08:15:31+00:00'
-description: 根据不同的 NAT 类型，需要使用不同的方式打洞。
+description: 根据不同的 NAT 类型，需要使用不同的方式打洞 🤝
 ---
 
 *最新内容和勘误请参见笔者撰写的线上书籍[《WebRTC 学习指南》](https://webrtc.mthli.com/)。*
 
-在 [上篇文章](https://mthli.xyz/p2p-hole-punching/) 中，我们大致了解了 P2P 的打洞原理。但实际情况比理论要复杂得多。**经典的** NAT（NAPT）可分为完全圆锥型、受限圆锥型、端口受限圆锥型和对称型四种，需要借助 ICE（Interactive Connectivity Establishment，交互式连接建立）框架辅助连接。
+在 [上篇文章](https://webrtc.mthli.com/basic/p2p-hole-punching/) 中，我们大致了解了 P2P 的打洞原理。但实际情况比理论要复杂得多。**经典的** NAT（NAPT）可分为完全圆锥型、受限圆锥型、端口受限圆锥型和对称型四种，需要借助 ICE（Interactive Connectivity Establishment，交互式连接建立）框架辅助连接。
 
-之所以强调是经典的，是因为这四种类型最早由 [RFC 3489](https://tools.ietf.org/html/rfc3489) 定义；但后来的实践证明市场上的 NAT 实现远不止这四种类，于是便在 [RFC 5389](https://tools.ietf.org/html/rfc5389) 中做了修正。不过这并不妨碍我们理解 ICE 的交互过程。本文依然以经典的 NAT 类型为主；对于两份 RFC 的不同之处，感兴趣的读者可以参考这个链接 [STUN (RFC 3489) vs. STUN (RFC 5389/5780)](https://netmanias.com/en/post/techdocs/6065/nat-network-protocol/stun-rfc-3489-vs-stun-rfc-5389-5780)。
+之所以强调是经典的，是因为这四种类型最早由 [RFC 3489](https://tools.ietf.org/html/rfc3489) 定义；但后来的实践证明市场上的 NAT 实现远不止这四种类，于是便在 [RFC 5389](https://tools.ietf.org/html/rfc5389) 中做了修正。不过这并不妨碍我们简单理解 ICE 的交互过程。本文依然以经典的 NAT 类型为主；对于两份 RFC 的不同之处，感兴趣的读者可以参考这个链接 [STUN (RFC 3489) vs. STUN (RFC 5389/5780)](https://netmanias.com/en/post/techdocs/6065/nat-network-protocol/stun-rfc-3489-vs-stun-rfc-5389-5780)。
 
-## 完全圆锥型
+## 完全圆锥形
 
-![图片引用自维基百科「Network address translation」条目](./full-cone.png)
+![](./full-cone.png)
 
-完全圆锥型满足：一旦内部地址（iAddr:iPort）映射到外部地址（eAddr:ePort），所有发自 iAddr:iPort 的数据包都经由 eAddr:ePort 向外发送；且**任意**外部主机发送的数据包都能经由 eAddr:ePort 到达 iAddr:iPort。
+完全圆锥型满足：一旦内部地址 `iAddr:iPort` 映射到外部地址 `eAddr:ePort` ，所有发自 `iAddr:iPort` 的数据包都经由 `eAddr:ePort` 向外发送；且任意外部主机发送的数据包都能经由 `eAddr:ePort` 到达 `iAddr:iPort` 。
 
 ## 受限圆锥型
 
-![图片引用自维基百科「Network address translation」条目](./restricted-cone.png)
+![](./restricted-cone.png)
 
-受限圆锥型满足：一旦内部地址（iAddr:iPort）映射到外部地址（eAddr:ePort），所有发自 iAddr:iPort 的数据包都经由 eAddr:ePort 向外发送；但**只有** iAddr:iPort 曾经发送过数据包的外部主机（nAddr:any）发送的数据包，才能经由 eAddr:ePort 到达 iAddr:iPort。注意，这里的 any 指外部主机源端口不受限制。即受限圆锥型限制了可以发送数据包的外部主机的 IP，但没有限制外部主机的端口号。
+受限圆锥型满足：一旦内部地址 `iAddr:iPort` 映射到外部地址 `eAddr:ePort` ，所有发自 `iAddr:iPort` 的数据包都经由 `eAddr:ePort` 向外发送；但只有曾经接收到 `iAddr:iPort` 发送的数据包的外部主机 `nAddr:any` 发送的数据包，才能经由 `eAddr:ePort` 到达 `iAddr:iPort` 。注意，这里的 `any` 指外部主机源端口不受限制。即受限圆锥型限制了可以发送数据包的外部主机的 IP，但没有限制外部主机的端口号。
 
 ## 端口受限圆锥型
 
-![图片引用自维基百科「Network address translation」条目](./port-restricted-cone.png)
+![](./port-restricted-cone.png)
 
-端口受限圆锥型在受限圆锥型的基础上，加上了对外部主机的端口号限制，即**只有** iAddr:iPort 曾经发送过数据包的外部主机（nAddr:nPort）发送的数据包，才能经由 eAddr:ePort 到达 iAddr:iPort。
+端口受限圆锥型在受限圆锥型的基础上，加上了对外部主机的端口号限制，即只有曾经接收到 `iAddr:iPort` 发送的数据包的外部主机 `nAddr:nPort` 发送的数据包，才能经由 `eAddr:ePort` 到达 `iAddr:iPort` 。
 
 ## 对称型
 
-![图片引用自维基百科「Network address translation」条目](./symmetric.png)
+![](./symmetric.png)
 
-对称型的场景比较复杂一些。我们将内部地址（iAddr:iPort）与外部主机（nAddr:nPort）的地址和端口号组成一个四元组 [iAddr, iPort, nAddr, nPort]。对于四元组中的不同取值，NAT 都会对应分配一个外部地址（eAddr:ePort）；并且也**只有**曾经收到过内部主机数据的外部主机，才能够把数据包发回。
+对称型的场景比较复杂一些。我们将内部地址 `iAddr:iPort` 与外部主机 `nAddr:nPort` 的地址和端口号组成一个四元组 `(iAddr, iPort, nAddr, nPort)` ，对于四元组中的不同取值，NAT 都会对应分配一个外部地址 `eAddr:ePort` ；并且也只有曾经收到内部主机数据的对应的外部主机，才能够把数据包发回。
 
 ## ICE
 
-从上述对于四种不同类型的 NAT 的介绍可以看出，外部主机和 NAT 之后的设备进行通信的难度是逐步提升的，即「完全圆锥型 < 受限圆锥型 < 端口受限圆锥型 < 对称型」。
+从上述描述可以看出，外部主机和位于 NAT 之后的设备进行通信的难度是逐步提升的，即「完全圆锥型 < 受限圆锥型 < 端口受限圆锥型 < 对称型」。
 
-其实对于圆锥型，我们依然可以使用 [上篇文章](https://mthli.xyz/p2p-hole-punching/) 中介绍的通过公网服务器做**地址转发**的方式打洞连接。但是对于对称型，则只能使用公网服务器做**流量中继**的方式进行连接了，因为对于四元组中的不同取值，NAT 都会对应分配一个外部地址（eAddr:ePort）；所以对称型与公网服务器进行连接并被交换的外部地址，并不是对方客户端能连接成功的外部地址。
+对于圆锥型，我们依然可以使用 [上篇文章](https://webrtc.mthli.com/basic/p2p-hole-punching/) 中介绍的通过公网服务器做地址转发的方式打洞连接。但对于对称型，只能使用公网服务器做流量中继的方式进行连接，因为对于四元组中的不同取值，NAT 都会对应分配一个外部地址 `eAddr:ePort` ；所以对称型与公网服务器进行连接并被交换的外部地址，并不是对端能连接成功的外部地址。
 
-于是正像文章开头提到的那样，对于不同的 NAT 类型，我们借助 [ICE](https://tools.ietf.org/html/rfc5245)（Interactive Connectivity Establishment，交互式连接建立）框架使用不同的方式进行打洞，这个框架能让两端能够互相找到对方并建立连接。大致流程如下：
+所以正如本文开头提到的那样，对于不同的 NAT 类型，我们需要借助 ICE（Interactive Connectivity Establishment，交互式连接建立）框架使用不同的方式进行打洞，这个框架能让两端能够互相找到对方并建立连接。大致流程如下：
 
-1. 直接的 TCP 连接，通过 HTTP 端口或 HTTPS 端口。
-2. 直接的 UDP 连接，使用 STUN（Session Traversal Utilities for NAT）服务器做地址转发。
-3. 间接的连接均使用 TURN（Traversal Using Relays around NAT）服务器做流量中继。
+1. TCP 直接连接时，通过 HTTP 端口或 HTTPS 端口。
+2. UDP 直连时，使用 STUN（Session Traversal Utilities for NAT）服务器做地址转发。
+3. 间接连接均使用 TURN（Traversal Using Relays around NAT）服务器做流量中继。
 
 当然，NAT 自己不会告诉服务器它是什么类型的，我们需要一套交互式策略检测对应的类型，而检测工作一般是由 STUN 服务器完成的。
 
 ## STUN
 
-STUN（Session Traversal Utilities for NAT，NAT 会话穿越应用程序）是一种允许位于 NAT 之后的客户端找出自己的公网地址，并判断出 NAT 阻止其直连的限制方法的协议。这些信息会被用来位于 NAT 之后的客户端之间创建 UDP 连接。
+STUN（Session Traversal Utilities for NAT，NAT 会话穿越应用程序）是一种允许位于 NAT 之后的客户端找出自己的公网地址，并判断出 NAT 限制其直连的方法的协议。获取到的信息会被用来位于 NAT 之后的客户端之间创建 UDP 连接。
 
 以下是一张符合 [RFC 3489](https://tools.ietf.org/html/rfc3489) 定义的经典 STUN 算法图。注意，虽然 [RFC 5389](https://tools.ietf.org/html/rfc5389) 更加合理但也更加复杂，而 RFC 3489 足以让我们理解 STUN 是什么以及怎样工作的。
 
-![符合 RFC 3489 的经典 STUN 算法](./stun.png)
+![](./ice.png)
 
 当路径终点为红色时，是无法建立 UDP 连接的；而如果不是红色，则可以建立 UDP 连接。
 
@@ -66,4 +66,4 @@ STUN（Session Traversal Utilities for NAT，NAT 会话穿越应用程序）是�
 
 ---
 
-以上就是对 ICE、STUN、TURN 的介绍了。实际的 ICE 过程要比本文介绍的复杂得多，感兴趣的读者可以自行阅读 [RFC 5245](https://tools.ietf.org/html/rfc5245)。当然，我们也没有必要自己实现一套 ICE 框架，常用的第三方 RTC 框架比如 [mediasoup](https://github.com/versatica/mediasoup) 均已实现了 ICE，我们只需要基于这些框架开发就可以了。
+以上就是对 ICE、STUN、TURN 的介绍了。实际的 ICE 过程要比本文介绍的复杂得多，感兴趣的读者可以自行阅读 [RFC 5245](https://tools.ietf.org/html/rfc5245)。当然，我们也没有必要自己实现一套 ICE 框架，常用的第三方 RTC 框架比如 [mediasoup](https://github.com/versatica/mediasoup) 均已实现了 ICE，直接使用即可。

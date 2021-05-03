@@ -10,7 +10,7 @@ Yet another blog of myself 👀
 
 - [WebRTC 编译指南](https://mthli.xyz/webrtc-compilation/)
 - [WebRTC 多人会议服务端架构](https://mthli.xyz/mesh-mcu-sfu/)
-- [ICE, STUN, TURN](https://mthli.xyz/ice-stun-turn/)
+- [ICE 交互流程介绍](https://mthli.xyz/ice-stun-turn/)
 - [P2P 打洞原理](https://mthli.xyz/p2p-hole-punching/)
 - [WebRTC 入门介绍](https://mthli.xyz/webrtc-introduction/)
 - [触摸事件的分发与嵌套滚动](https://mthli.xyz/touch-nested-scrolling/)
