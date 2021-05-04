@@ -71,7 +71,19 @@ const SEO = ({
           content: 'PUUxPokYUa0OgcOrEhMH',
         },
       ].concat(meta)}
-    />
+    >
+      <script>
+        {`
+          (function(){
+            var el = document.createElement("script");
+            el.src = "https://sf1-scmcdn-tos.pstatp.com/goofy/ttzz/push.js?6db04ad159d9ef9110fef3ad85973cffefae865430610d6a4e89b0ecab29f20292e485e55ded9865c1d60bbc5ada8e9a66b90adfc91df36816b5de84c32487fc";
+            el.id = "ttzz";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(el, s);
+          })(window)
+        `}
+      </script>
+    </Helmet>
   )
 }
 
