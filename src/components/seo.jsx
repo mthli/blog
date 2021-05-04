@@ -66,6 +66,10 @@ const SEO = ({
           name: 'google-site-verification',
           content: 'M3XhpmAR-H4xgeNwBx6S-N4mQ4gRV2rVJSTIt5f3Rik',
         },
+        {
+          name: 'bytedance-verification-code',
+          content: 'PUUxPokYUa0OgcOrEhMH',
+        },
       ].concat(meta)}
     />
   )
