@@ -8,6 +8,7 @@ Yet another blog of myself 👀
 
 ## Archives
 
+- [我们对比特币的思考](https://mthli.xyz/our-thoughts-on-bitcoin/)
 - [RTP 协议介绍](https://mthli.xyz/rtp-introduction/)
 - [视频帧名词解释](https://mthli.xyz/video-frame-words/)
 - [SDP 会话描述介绍](https://mthli.xyz/sdp-introduction/)
