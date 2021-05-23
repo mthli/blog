@@ -4,7 +4,7 @@ date: '2021-04-09T19:20:00+08:00'
 description: GOP / I-帧 / P-帧 / B-帧 / DTS / PTS 🎞️
 ---
 
-*最新内容和勘误请参见笔者撰写的线上书籍[《WebRTC 学习指南》](https://webrtc.mthli.com/)。*
+*最新内容和勘误请参见笔者撰写的线上书籍[《WebRTC 学习指南》](https://webrtc.mthli.com/lost/video-frame-words/)。*
 
 在排查 WebRTC 丢包问题时，我们会接触到一些视频帧相关的名词，如 GOP、I-帧、P-帧、B-帧等。如果是之前对视频编解码不是特别了解的同学（比如笔者）可能会有些疑惑。因此本文尝试将这些名词逐一解释，方便大家查阅。
 

@@ -1,7 +1,7 @@
 ---
 title: WebRTC 入门介绍
 date: '2020-10-17T04:42:23+00:00'
-description: 简单介绍 WebRTC 是什么。
+description: 简单介绍 WebRTC 是什么 🤔
 ---
 
 *最新内容和勘误请参见笔者撰写的线上书籍[《WebRTC 学习指南》](https://webrtc.mthli.com/)。*

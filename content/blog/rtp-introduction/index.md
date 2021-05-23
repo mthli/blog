@@ -4,7 +4,7 @@ date: '2021-05-03T15:55:07+00:00'
 description: Data Transfer & Control 📝
 ---
 
-*最新内容和勘误请参见笔者撰写的线上书籍[《WebRTC 学习指南》](https://webrtc.mthli.com/)。*
+*最新内容和勘误请参见笔者撰写的线上书籍[《WebRTC 学习指南》](https://webrtc.mthli.com/lost/rtp-introduction/)。*
 
 WebRTC 使用 RTP 协议传输音视频，也依赖于 RTP 协议提供的信息处理丢包。本文尝试结合 [RFC 3350](https://tools.ietf.org/html/rfc3550) 对 RTP 协议做一个较为简洁的介绍，方便大家查阅。
 

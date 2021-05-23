@@ -4,7 +4,7 @@ date: '2020-11-08T03:06:00+00:00'
 description: 需要公网服务器支持 🐰
 ---
 
-*最新内容和勘误请参见笔者撰写的线上书籍[《WebRTC 学习指南》](https://webrtc.mthli.com/)。*
+*最新内容和勘误请参见笔者撰写的线上书籍[《WebRTC 学习指南》](https://webrtc.mthli.com/basic/p2p-hole-punching/)。*
 
 WebRTC 本身是基于点对点（Peer-to-Peer）连接的。如果连接双方都是公网地址，则可以直接访问到对方，从而建立连接。但大部分情况下其中一方或者双方都不是公网地址，而是隐藏在 NAT（Network Address Translation，网络地址转换）之后的内网地址，此时要建立连接，就得使用某种能绕过 NAT 的打洞技术。
 

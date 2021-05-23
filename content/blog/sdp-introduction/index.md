@@ -4,7 +4,7 @@ date: '2021-03-28T16:28:00+08:00'
 description: Session Description Protocol 📝
 ---
 
-*最新内容和勘误请参见笔者撰写的线上书籍[《WebRTC 学习指南》](https://webrtc.mthli.com/)。*
+*最新内容和勘误请参见笔者撰写的线上书籍[《WebRTC 学习指南》](https://webrtc.mthli.com/basic/sdp-introduction/)。*
 
 SDP 全称 Session Description Protocol，即会话描述协议。SDP 是一份具有特殊约定格式的纯文本描述文档（类似 JSON / XML），其中包含了 WebRTC 建立连接所需的 ICE 服务器信息、音视频编码信息等，而开发者可以使用 WebSocket 等传输协议将其发送到信令服务器。
 
