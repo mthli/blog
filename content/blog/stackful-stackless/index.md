@@ -18,7 +18,7 @@ description: 区别在于是否可以在其任意嵌套函数中被挂起。
 
 图中涉及到几个关键点，Stack Pointer 即栈顶指针，总是指向调用栈的顶部地址，该地址由 esp 寄存器存储；Frame Pointer 即基址指针，总是指向当前栈帧（当前正在运行的子函数）的底部地址，该地址由 ebp 寄存器存储。Return Address 则在是 callee 返回后，caller 将继续执行的指令所在的地址；而指令地址是由 eip 寄存器负责读取的，且 eip 寄存器总是预先读取了**当前栈帧中**下一条将要执行的指令的地址。
 
-我们可以很轻易地构造一段 C 代码，然后将其转换为汇编，看看底层究竟做了什么。笔者推荐使用 [Compiler Explorer](https://godbolt.org/) 查看汇编，相比直接在命令行使用 GCC/Clang 生成的汇编而言，更加简洁清晰。以下汇编由 x86_64 gcc 9.3 添加编译参数 `-m32` 生成，采用的是 AT&T 语法，不熟悉该语法的读者可猛击链接 [Linux 汇编语言开发指南](https://www.ibm.com/developerworks/cn/linux/l-assembly/index.html) 学习一番。
+我们可以很轻易地构造一段 C 代码，然后将其转换为汇编，看看底层究竟做了什么。笔者推荐使用 [Compiler Explorer](https://godbolt.org/) 查看汇编，相比直接在命令行使用 GCC/Clang 生成的汇编而言，更加简洁清晰。以下汇编由 x86_64 gcc 9.3 添加编译参数 `-m32` 生成，采用的是 AT&T 语法：
 
 ```c
 int callee() { // callee:
@@ -91,7 +91,7 @@ caller:
 
 ![callee 返回 caller 的调用栈变化（忽略传参）](./callee-to-caller.png)
 
-以上便是函数调用栈的大致运行过程了。当然真实的调用栈运行过程要复杂一些，比如笔者就选择忽略了函数传参等细节以保持篇幅，读者若对此感兴趣，则推荐阅读这篇文章 [C Function Call Conventions and the Stack](https://www.csee.umbc.edu/~chang/cs313.s02/stack.shtml)。
+以上便是函数调用栈的大致运行过程了。当然真实的调用栈运行过程要复杂一些，**比如笔者就选择忽略了函数传参等细节以保持篇幅，**读者若对此感兴趣，则推荐阅读这篇文章 [C Function Call Conventions and the Stack](https://www.csee.umbc.edu/~chang/cs313.s02/stack.shtml)。
 
 ## 有栈协程
 
@@ -115,16 +115,20 @@ char **init_ctx(char *func) {
     size_t size = sizeof(char *) * 1024;
     char **ctx = malloc(size);
     memset(ctx, 0, size);
+
     // 将 func 的地址作为其栈帧 return address 的初始值，
-    // 当 func 第一次被调度时，将从其入口处开始执行
+    // 是因为 func 第一次被调度时，还没有现成的上下文，
+    // 但 eip 需要指向一条明确的指令地址才能开始执行，
+    // 这条指令地址自然就是 func 的入口地址
     *(ctx + 0) = (char *) func;
-    // 将 ctx 的内存地址作为其栈帧顶部地址的初始值
-    *(ctx + 5) = (char *) ctx;
+
+    // 需要预留 6 个寄存器内容的存储空间，
+    // 所以 func 的栈帧顶部地址（esp）的初始值为存储空间 + 1
+    size = sizeof(char *) * 6 + 1;
+    *(ctx + 5) = (char *) (ctx + size);
     return ctx;
 }
 ```
-
-读者应该注意到了，我们在初始化上下文的过程中，预设了 return address 和 esp 的初始值。这是因为 `func` 第一次被调度时，还没有现成的上下文，但 eip 需要指向一条明确的指令地址才能开始执行，这条指令地址自然就是 `func` 的入口地址；同时 `func` 刚开始运行时的栈帧底部即是调用栈栈顶（还记得 `movl %esp, %ebp` 吗），所以将申请的内存地址设置为 esp 的初始值，便是将这段内存作为 `func` 运行时的栈帧空间了。
 
 接下来，为了保存和恢复寄存器的值，我们还需要撰写几段汇编代码。假设此时我们已经将存储上下文的内存地址赋值给了 eax，则保存的逻辑如下：
 

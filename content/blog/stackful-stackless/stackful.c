@@ -29,12 +29,12 @@
 // 编译
 // gcc -m32 stackful.c stackful.s
 
-// *(CTX + 0) 存储 return address
-// *(CTX + 1) 存储 ebx
-// *(CTX + 2) 存储 edi
-// *(CTX + 3) 存储 esi
-// *(CTX + 4) 存储 ebp
-// *(CTX + 5) 存储 esp
+// *(ctx + 0) 存储 return address
+// *(ctx + 1) 存储 ebx
+// *(ctx + 2) 存储 edi
+// *(ctx + 3) 存储 esi
+// *(ctx + 4) 存储 ebp
+// *(ctx + 5) 存储 esp
 char **MAIN_CTX;
 char **NEST_CTX;
 char **FUNC_CTX_1;
@@ -51,11 +51,15 @@ char **init_ctx(char *func) {
     size_t size = sizeof(char *) * 1024;
     char **ctx = malloc(size);
     memset(ctx, 0, size);
+
     // 将 func 的地址作为其栈帧 return address 的初始值，
     // 当 func 第一次被调度时，将从其入口处开始执行
     *(ctx + 0) = (char *) func;
-    // 将 ctx 的内存地址作为其栈帧顶部地址的初始值
-    *(ctx + 5) = (char *) ctx;
+
+    // 需要预留 6 个寄存器内容的存储空间；
+    // 所以栈帧顶部地址的初始值为存储空间地址 + 1
+    size = sizeof(char *) * 6 + 1;
+    *(ctx + 5) = (char *) (ctx + size);
     return ctx;
 }
 
