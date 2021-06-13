@@ -8,6 +8,7 @@ Yet another blog of myself 👀
 
 ## Archives
 
+- [PeerConnection 连接流程](https://mthli.xyz/peer-connection/)
 - [WebRTC 临界锁实现](https://mthli.xyz/webrtc-criticalsection/)
 - [我们对比特币的思考](https://mthli.xyz/our-thoughts-on-bitcoin/)
 - [RTP 协议介绍](https://mthli.xyz/rtp-introduction/)
