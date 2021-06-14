@@ -133,6 +133,7 @@ char **init_ctx(char *func) {
 接下来，为了保存和恢复寄存器的值，我们还需要撰写几段汇编代码。假设此时我们已经将存储上下文的内存地址赋值给了 eax，则保存的逻辑如下：
 
 ```c
+// 依次将各个寄存器的值存储；
 // 注意 x86 的栈增长方向是从高位向低位增长的，所以寻址是向下偏移的
 movl %ebx,  -8(%eax)
 movl %edi, -12(%eax)
@@ -142,7 +143,7 @@ movl %esp, -24(%eax)
 
 //  %esp  存储的是当前调用栈的顶部所在的地址，
 // (%esp) 是顶部地址所指向的内存区域存储的值，
-// 将这个值存储为 current 的 return address
+// 将这个值存储为 return address
 movl (%esp), %ecx
 movl %ecx, -4(%eax)
 ```
@@ -150,6 +151,7 @@ movl %ecx, -4(%eax)
 而与之相对应的恢复逻辑如下：
 
 ```c
+// 依次将存储的值写入各个寄存器；
 // 注意 x86 的栈增长方向是从高位向低位增长的，所以寻址是向下偏移的
 movl  -8(%eax), %ebx
 movl -12(%eax), %edi
@@ -159,7 +161,7 @@ movl -24(%eax), %esp
 
 //  %esp  存储的是当前调用栈的顶部所在的地址，
 // (%esp) 是顶部地址所指向的内存区域存储的值，
-// 将 next 的 return address 写入到该内存区域
+// 将存储的 return address 写入到该内存区域
 movl -4(%eax), %ecx
 movl %ecx, (%esp)
 ```
