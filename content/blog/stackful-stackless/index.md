@@ -104,63 +104,63 @@ caller:
 同时还需要保存寄存器的值。这里便涉及到了函数调用栈中的一个知识点，[根据约定](https://en.wikipedia.org/wiki/X86_calling_conventions#Caller-saved_(volatile)_registers)，有的寄存器是由 caller 负责保存的，如 eax、ecx 和 edx；而有的寄存器是 callee 负责保存的，如 ebx、edi 和 esi。对于被调用的协程而言，只需要保存 callee 相关的寄存器的值，调用栈相关的 ebp 和 esp 的值，以及 eip 存储的 return address。
 
 ```c
-// *(CTX + 0) 存储 return address
-// *(CTX + 1) 存储 ebx
-// *(CTX + 2) 存储 edi
-// *(CTX + 3) 存储 esi
-// *(CTX + 4) 存储 ebp
-// *(CTX + 5) 存储 esp
+// *(ctx + CTX_SIZE - 1) 存储 return address
+// *(ctx + CTX_SIZE - 2) 存储 ebx
+// *(ctx + CTX_SIZE - 3) 存储 edi
+// *(ctx + CTX_SIZE - 4) 存储 esi
+// *(ctx + CTX_SIZE - 5) 存储 ebp
+// *(ctx + CTX_SIZE - 6) 存储 esp
+
+// 注意 x86 的栈增长方向是从高位向低位增长的，所以寻址是向下偏移的
 char **init_ctx(char *func) {
-    // 动态申请 1kb 内存作为栈帧空间
-    size_t size = sizeof(char *) * 1024;
+    // 动态申请 CTX_SIZE 内存用于存储协程上下文
+    size_t size = sizeof(char *) * CTX_SIZE;
     char **ctx = malloc(size);
     memset(ctx, 0, size);
 
     // 将 func 的地址作为其栈帧 return address 的初始值，
-    // 是因为 func 第一次被调度时，还没有现成的上下文，
-    // 但 eip 需要指向一条明确的指令地址才能开始执行，
-    // 这条指令地址自然就是 func 的入口地址
-    *(ctx + 0) = (char *) func;
+    // 当 func 第一次被调度时，将从其入口处开始执行
+    *(ctx + CTX_SIZE - 1) = (char *) func;
 
-    // 需要预留 6 个寄存器内容的存储空间，
-    // 所以 func 的栈帧顶部地址（esp）的初始值为存储空间 + 1
-    size = sizeof(char *) * 6 + 1;
-    *(ctx + 5) = (char *) (ctx + size);
-    return ctx;
+    // 需要预留 6 个寄存器内容的存储空间；
+    // 余下的内存空间均可以作为 func 的栈帧空间
+    size = sizeof(char *) * (CTX_SIZE - 6) - 1;
+    *(ctx + CTX_SIZE - 6) = (char *) (ctx + size);
+    return ctx + CTX_SIZE;
 }
 ```
 
 接下来，为了保存和恢复寄存器的值，我们还需要撰写几段汇编代码。假设此时我们已经将存储上下文的内存地址赋值给了 eax，则保存的逻辑如下：
 
 ```c
-// 依次将各个寄存器的值存储
-movl %esp, 20(%eax)
-movl %ebp, 16(%eax)
-movl %esi, 12(%eax)
-movl %edi,  8(%eax)
-movl %ebx,  4(%eax)
+// 注意 x86 的栈增长方向是从高位向低位增长的，所以寻址是向下偏移的
+movl %ebx,  -8(%eax)
+movl %edi, -12(%eax)
+movl %esi, -16(%eax)
+movl %ebp, -20(%eax)
+movl %esp, -24(%eax)
 
 //  %esp  存储的是当前调用栈的顶部所在的地址，
 // (%esp) 是顶部地址所指向的内存区域存储的值，
-// 将这个值存储为 return address
+// 将这个值存储为 current 的 return address
 movl (%esp), %ecx
-movl %ecx, 0(%eax)
+movl %ecx, -4(%eax)
 ```
 
 而与之相对应的恢复逻辑如下：
 
 ```c
-// 依次将存储的值写入各个寄存器
-movl 20(%eax), %esp
-movl 16(%eax), %ebp
-movl 12(%eax), %esi
-movl  8(%eax), %edi
-movl  4(%eax), %ebx
+// 注意 x86 的栈增长方向是从高位向低位增长的，所以寻址是向下偏移的
+movl  -8(%eax), %ebx
+movl -12(%eax), %edi
+movl -16(%eax), %esi
+movl -20(%eax), %ebp
+movl -24(%eax), %esp
 
 //  %esp  存储的是当前调用栈的顶部所在的地址，
 // (%esp) 是顶部地址所指向的内存区域存储的值，
-// 将存储的 return address 写入到该内存区域
-movl 0(%eax), %ecx
+// 将 next 的 return address 写入到该内存区域
+movl -4(%eax), %ecx
 movl %ecx, (%esp)
 ```
 
@@ -210,6 +210,10 @@ int main() {
         yield();
     }
 
+    free(MAIN_CTX - CTX_SIZE);
+    free(NEST_CTX - CTX_SIZE);
+    free(FUNC_CTX_1 - CTX_SIZE);
+    free(FUNC_CTX_2 - CTX_SIZE);
     return 0;
 }
 ```

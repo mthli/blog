@@ -29,12 +29,16 @@
 // 编译
 // gcc -m32 stackful.c stackful.s
 
-// *(ctx + 0) 存储 return address
-// *(ctx + 1) 存储 ebx
-// *(ctx + 2) 存储 edi
-// *(ctx + 3) 存储 esi
-// *(ctx + 4) 存储 ebp
-// *(ctx + 5) 存储 esp
+// 动态申请 1Kb 内存用于存储协程上下文（包括栈帧占用的空间）；
+// 注意 x86 的栈增长方向是从高位向低位增长的，所以寻址是向下偏移的
+const int CTX_SIZE = 1024;
+
+// *(ctx + CTX_SIZE - 1) 存储 return address
+// *(ctx + CTX_SIZE - 2) 存储 ebx
+// *(ctx + CTX_SIZE - 3) 存储 edi
+// *(ctx + CTX_SIZE - 4) 存储 esi
+// *(ctx + CTX_SIZE - 5) 存储 ebp
+// *(ctx + CTX_SIZE - 6) 存储 esp
 char **MAIN_CTX;
 char **NEST_CTX;
 char **FUNC_CTX_1;
@@ -46,24 +50,25 @@ int YIELD_COUNT;
 // 切换上下文，具体参见 stackful.s 的注释
 extern void swap_ctx(char **current, char **next);
 
+// 注意 x86 的栈增长方向是从高位向低位增长的，所以寻址是向下偏移的
 char **init_ctx(char *func) {
-    // 动态申请 1kb 内存作为栈帧空间
-    size_t size = sizeof(char *) * 1024;
+    // 动态申请 CTX_SIZE 内存用于存储协程上下文
+    size_t size = sizeof(char *) * CTX_SIZE;
     char **ctx = malloc(size);
     memset(ctx, 0, size);
 
     // 将 func 的地址作为其栈帧 return address 的初始值，
     // 当 func 第一次被调度时，将从其入口处开始执行
-    *(ctx + 0) = (char *) func;
+    *(ctx + CTX_SIZE - 1) = (char *) func;
 
     // 需要预留 6 个寄存器内容的存储空间；
-    // 所以栈帧顶部地址的初始值为存储空间地址 + 1
-    size = sizeof(char *) * 6 + 1;
-    *(ctx + 5) = (char *) (ctx + size);
-    return ctx;
+    // 余下的内存空间均可以作为 func 的栈帧空间
+    size = sizeof(char *) * (CTX_SIZE - 6) - 1;
+    *(ctx + CTX_SIZE - 6) = (char *) (ctx + size);
+    return ctx + CTX_SIZE;
 }
 
-// 因为我们只有 4 个协程（其中一个是主协程，
+// 因为我们只有 4 个协程（其中一个是主协程），
 // 所以这里简单用 switch 来模拟调度器切换上下文了
 void yield() {
     switch ((YIELD_COUNT++) % 4) {
@@ -123,5 +128,9 @@ int main() {
         yield();
     }
 
+    free(MAIN_CTX - CTX_SIZE);
+    free(NEST_CTX - CTX_SIZE);
+    free(FUNC_CTX_1 - CTX_SIZE);
+    free(FUNC_CTX_2 - CTX_SIZE);
     return 0;
 }

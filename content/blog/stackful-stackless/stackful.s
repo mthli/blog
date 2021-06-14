@@ -33,33 +33,35 @@ swap_ctx:
     // 获取 swap_ctx 的第一个参数 char **current
     movl 4(%esp), %eax
 
-    // 依次将各个寄存器的值存储到 current
-    movl %esp, 20(%eax)
-    movl %ebp, 16(%eax)
-    movl %esi, 12(%eax)
-    movl %edi,  8(%eax)
-    movl %ebx,  4(%eax)
+    // 依次将各个寄存器的值存储到 current，
+    // 注意 x86 的栈增长方向是从高位向低位增长的，所以寻址是向下偏移的
+    movl %ebx,  -8(%eax)
+    movl %edi, -12(%eax)
+    movl %esi, -16(%eax)
+    movl %ebp, -20(%eax)
+    movl %esp, -24(%eax)
 
     //  %esp  存储的是当前调用栈的顶部所在的地址，
     // (%esp) 是顶部地址所指向的内存区域存储的值，
     // 将这个值存储为 current 的 return address
     movl (%esp), %ecx
-    movl %ecx, 0(%eax)
+    movl %ecx, -4(%eax)
 
     // 获取 swap_ctx 的第二个参数 char **next
     movl 8(%esp), %eax
 
-    // 依次将 next 存储的值写入各个寄存器
-    movl 20(%eax), %esp
-    movl 16(%eax), %ebp
-    movl 12(%eax), %esi
-    movl  8(%eax), %edi
-    movl  4(%eax), %ebx
+    // 依次将 next 存储的值写入各个寄存器，
+    // 注意 x86 的栈增长方向是从高位向低位增长的，所以寻址是向下偏移的
+    movl  -8(%eax), %ebx
+    movl -12(%eax), %edi
+    movl -16(%eax), %esi
+    movl -20(%eax), %ebp
+    movl -24(%eax), %esp
 
     //  %esp  存储的是当前调用栈的顶部所在的地址，
     // (%esp) 是顶部地址所指向的内存区域存储的值，
     // 将 next 的 return address 写入到该内存区域
-    movl 0(%eax), %ecx
+    movl -4(%eax), %ecx
     movl %ecx, (%esp)
 
     ret
