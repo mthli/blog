@@ -4,6 +4,8 @@ date: '2021-06-20T08:55:24+00:00'
 description: 使用观察者模式进行代码解耦 🖖
 ---
 
+*最新内容和勘误请参见笔者撰写的线上书籍[《WebRTC 学习指南》](https://webrtc.mthli.com/code/sigslot/)。*
+
 在阅读 WebRTC 源码过程中，经常可以看到 [sigslot](http://sigslot.sourceforge.net/)（信号槽）相关的代码调用，例如：
 
 ```cpp:title=peer_connection.cc
