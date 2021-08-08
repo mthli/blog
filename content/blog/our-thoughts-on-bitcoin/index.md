@@ -4,7 +4,7 @@ date: '2021-05-04T11:02:49+00:00'
 description: 本文译自桥水基金的文章「Our Thoughts on Bitcoin」。
 ---
 
-*本文译自桥水基金的文章 [Our Thoughts on Bitcoin](https://www.bridgewater.com/research-and-insights/our-thoughts-on-bitcoin)。原文发表于 2021.01.28，彼时比特币的价格约为 \$30000；而截止到笔者开始翻译时，价格约为 \$56000。建议读者结合原文观看。*
+*本文译自桥水基金的文章 [Our Thoughts on Bitcoin](https://www.bridgewater.com/research-and-insights/our-thoughts-on-bitcoin)。原文发表于 2021.01.28，彼时比特币的价格约为 \$30000；而截止到笔者开始翻译时，价格约为 \$56000。建议读者结合原文阅读。*
 
 ## 我对比特币的思考
 
