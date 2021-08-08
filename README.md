@@ -8,6 +8,7 @@ Yet another blog of myself 👀
 
 ## Archives
 
+- [WebRTC 智能指针使用指南](https://mthli.xyz/webrtc-smart-pointers/)
 - [ICE 连接排序规则](https://mthli.xyz/ice-connection-sorting/)
 - [WebRTC 视频推流过程](https://mthli.xyz/video-streaming-process/)
 - [WebRTC 信号槽机制](https://mthli.xyz/webrtc-sigslot/)
