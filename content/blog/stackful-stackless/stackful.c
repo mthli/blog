@@ -64,7 +64,7 @@ char **init_ctx(char *func) {
     // 需要预留 6 个寄存器内容的存储空间；
     // 余下的内存空间均可以作为 func 的栈帧空间
     size = sizeof(char *) * (CTX_SIZE - 6) - 1;
-    *(ctx + CTX_SIZE - 6) = (char *) (ctx + size);
+    *(ctx + CTX_SIZE - 6) = (char *) ((size_t)ctx + size);
     return ctx + CTX_SIZE;
 }
 
