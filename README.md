@@ -8,6 +8,7 @@ Yet another blog of myself 👀
 
 ## Archives
 
+- [递归锁的缺点](https://mthli.xyz/recursive-re-entrant-locks/)
 - [WebRTC 编辑视频帧](https://mthli.xyz/webrtc-frame-transformer/)
 - [WebRTC 智能指针使用指南](https://mthli.xyz/webrtc-smart-pointers/)
 - [ICE 连接排序规则](https://mthli.xyz/ice-connection-sorting/)
