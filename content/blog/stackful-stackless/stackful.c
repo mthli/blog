@@ -29,8 +29,6 @@
 // 编译
 // gcc -m32 stackful.c stackful.s
 
-// 动态申请 1Kb 内存用于存储协程上下文（包括栈帧占用的空间）；
-// 注意 x86 的栈增长方向是从高位向低位增长的，所以寻址是向下偏移的
 const int CTX_SIZE = 1024;
 
 // *(ctx + CTX_SIZE - 1) 存储 return address
@@ -61,10 +59,10 @@ char **init_ctx(char *func) {
     // 当 func 第一次被调度时，将从其入口处开始执行
     *(ctx + CTX_SIZE - 1) = (char *) func;
 
-    // 需要预留 6 个寄存器内容的存储空间；
+    // https://github.com/mthli/blog/pull/12
+    // 需要预留 6 个寄存器内容的存储空间，
     // 余下的内存空间均可以作为 func 的栈帧空间
-    size = sizeof(char *) * (CTX_SIZE - 6) - 1;
-    *(ctx + CTX_SIZE - 6) = (char *) (ctx + size);
+    *(ctx + CTX_SIZE - 6) = (char *) (ctx + CTX_SIZE - 7);
     return ctx + CTX_SIZE;
 }
 
