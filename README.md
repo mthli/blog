@@ -8,6 +8,7 @@ Yet another blog of myself 👀
 
 ## Archives
 
+- [托尼·西巴的技术革新框架](https://mthli.xyz/seba-technology-disruption-framework/)
 - [递归锁的缺点](https://mthli.xyz/recursive-re-entrant-locks/)
 - [WebRTC 编辑视频帧](https://mthli.xyz/webrtc-frame-transformer/)
 - [WebRTC 智能指针使用指南](https://mthli.xyz/webrtc-smart-pointers/)
