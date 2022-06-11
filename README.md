@@ -8,6 +8,7 @@ Yet another blog of myself 👀
 
 ## Archives
 
+- [LogLog Privacy Policy](https://mthli.xyz/loglog/)
 - [递归锁的缺点](https://mthli.xyz/recursive-re-entrant-locks/)
 - [WebRTC 编辑视频帧](https://mthli.xyz/webrtc-frame-transformer/)
 - [WebRTC 智能指针使用指南](https://mthli.xyz/webrtc-smart-pointers/)
@@ -40,7 +41,7 @@ Yet another blog of myself 👀
 
     The MIT License (MIT)
 
-    Copyright (c) 2020 Matthew Lee
+    Copyright (c) 2022 Matthew Lee
     Copyright (c) 2015 Gatsbyjs
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
