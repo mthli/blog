@@ -8,7 +8,7 @@ description: 尽可能少地使用引用计数 🧷
 
 智能指针是现代 C++ 编程中一个绕不开的话题，WebRTC 也有一套使用智能指针的指南。鉴于 WebRTC 属于 Chromium 的一部分，所以这其实也是 [Chromium 使用智能指针的指南](https://www.chromium.org/developers/smart-pointer-guidelines)。
 
-WebRTC 中最常用的智能指针分别是 `std::unique_ptr` 和 `rtc::scoped_refptr` ，前者用于独占资源，后者用于引用计数。如果读者熟悉 C++ 11，会发现 `rtc::scoped_refptr` 和 `std::shared_ptr` 很像，但 WebRTC（以及 Chromium）并没有使用 `std::shared_ptr` 。
+WebRTC 中最常用的智能指针分别是 `std::unique_ptr` 和 `rtc::scoped_refptr` ，前者用于独占资源，后者用于引用计数。如果读者熟悉 C++ 11，就会发现 `rtc::scoped_refptr` 和 `std::shared_ptr` 很像，但 WebRTC（以及 Chromium）并没有使用 `std::shared_ptr` 。
 
 ## 对象所有权和调用约定
 
@@ -87,7 +87,7 @@ class RefCountInterface {
 };
 ```
 
-你不需要也没有必要自己手动调用这两个方法，一切都交由 `rtc::scoped_refptr` 管理。当然你也不一定非要自己实现这两个方法，可以简单借助 `rtc::RefCountedObject` 实现：
+你不需要也没有必要自己手动调用这两个方法，一切都交由 `rtc::scoped_refptr` 管理。当然你也不一定非要自己实现这两个方法，可以借助 `rtc::RefCountedObject` 实现：
 
 ```cpp:title=rtp_sender.cc
 rtc::scoped_refptr<VideoRtpSender> VideoRtpSender::Create(
@@ -105,7 +105,7 @@ rtc::scoped_refptr<VideoRtpSender> VideoRtpSender::Create(
 
 而对于 C++ 11 的 `std::shared_ptr` 而言则完全没有类型的限制，也不需要自己实现 `AddRef()` 和 `Release()` ，是一种非入侵式（non-intrusive）的引用计数实现。与之相对应的，`rtc::scoped_refptr` 就是一种入侵式（intrusive）的引用计数实现。
 
-之所以不使用 `std::shared_ptr`，一部分当然是历史原因，显然在 C++ 11 出现之前，`rtc::scoped_refptr` 就已经存在了。但更重要的是，`std::shared_ptr` 并没有给 WebRTC（以及 Chromium）带来显著的收益，且由于缺少了类型限制，反而会导致引用计数的滥用。
+之所以不使用 `std::shared_ptr`，一是历史原因，显然在 C++ 11 出现之前，`rtc::scoped_refptr` 就已经存在了。但更重要的是，`std::shared_ptr` 并没有给 WebRTC（以及 Chromium）带来显著的收益，且由于缺少了类型限制，反而会导致引用计数的滥用。
 
 **在 C++ 中使用引用计数会导致对象所有权不够明确，析构的时机也会变得难以理解，尤其是在多线程环境中。**所以我们应该尽可能少地使用引用计数，比如尽量使用单线程模型。
 

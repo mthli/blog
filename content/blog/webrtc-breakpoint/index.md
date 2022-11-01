@@ -6,7 +6,9 @@ description: 简单有效的 Android 调试方法 🐛
 
 *最新内容和勘误请参见笔者撰写的线上书籍[《WebRTC 学习指南》](https://webrtc.mthli.com/basic/webrtc-breakpoint/)。*
 
-WebRTC 在 Android 上的断点调试还是比较麻烦的，目前中文互联网引用得比较多的这篇 [macOS 下单步调试 WebRTC Android & iOS](https://blog.piasy.com/2018/08/14/build-webrtc/index.html) 在笔者看来显得复杂了。笔者结合另一篇文章 [WebRTC Android 的调试](http://blog.pprtc.com/2020/10/14/WebRTC-Android-debug/) 给出一个简单有效的 Android 调试方法（原文略显晦涩）。
+**本文所有源码均基于 WebRTC M85 (branch-heads/4183) 版本进行分析。**
+
+WebRTC 在 Android 上的断点调试还是比较麻烦的，目前中文互联网引用得比较多的这篇 [*macOS 下单步调试 WebRTC Android & iOS*](https://blog.piasy.com/2018/08/14/build-webrtc/index.html) 在笔者看来显得复杂了。笔者结合另一篇文章 [*WebRTC Android 的调试*](http://blog.pprtc.com/2020/10/14/WebRTC-Android-debug/) 给出一个简单有效的 Android 调试方法（原文略显晦涩）。
 
 ## 编译 Debug 包
 
@@ -135,3 +137,7 @@ settings set target.source-map ./../../../home/vagrant/webrtc/src /Users/minglia
 可以看到，我们已经成功打上断点了。有了断点调试能力以后，我们便可以深入源码学习 WebRTC 了；本书后续亦将结合源码，解构 WebRTC 的内部流程 🍻
 
 在实际的团队开发 WebRTC 的过程中，可能是由某一方同时维护和输出包含全部调试信息的 Debug 包，和去除所有调试信息的 Release 包。对于其他开发同学而言，即可使用上述 LLDB 路径替换的方式，将自己本机的 WebRTC 源码与 Debug 包关联起来，一劳永逸。
+
+---
+
+**<https://appr.tc> 已被 Google 停用，有能力的读者可以自行搭建 [webrtc/apprtc](https://github.com/webrtc/apprtc) 服务。**

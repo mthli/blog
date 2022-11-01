@@ -6,6 +6,8 @@ description: 在构造函数中加锁，在析构函数中解锁 🧐
 
 *最新内容和勘误请参见笔者撰写的线上书籍[《WebRTC 学习指南》](https://webrtc.mthli.com/code/criticalsection/)。*
 
+**本文所有源码均基于 WebRTC M85 (branch-heads/4183) 版本进行分析。**
+
 在阅读 WebRTC 源码过程中，经常可以看到 `rtc::CritScope` 相关的代码调用，例如：
 
 ```cpp:title=rtp_video_sender.cc
@@ -51,3 +53,9 @@ class X {
 ```
 
 更进一步来说，这其实是 C++ [RAII](https://zh.cppreference.com/w/cpp/language/raii)（资源获取即初始化，**R**esource **A**cquisition **I**s **I**nitialization）机制的一种使用场景。RAII 可以保证在释放资源时不受到异常退出的影响（即使发生了异常，也能正确释放资源）；同时还能预防编码过程忘记释放资源的行为。在笔者看来，RAII 是比 Golang 的 [defer](https://gobyexample-cn.github.io/defer) 机制更加简洁的存在，哈哈。
+
+---
+
+从 WebRTC M86 (branch-heads/4240) 版本开始 `rtc::CritScope` 被废弃，改为使用新的 `webrtc::Mutex` 实现。这是因为前者为递归锁（可重入），存在一些难以解决的问题 [^1]；需要改为非递归锁（不可重入）。关于递归锁的缺点，亦可参见笔者的 [这篇博客](https://mthli.xyz/recursive-re-entrant-locks/)。
+
+[^1]: [Issue 11567: Refactor webrtc to use a non-recursive CriticalSection](https://bugs.chromium.org/p/webrtc/issues/detail?id=11567)

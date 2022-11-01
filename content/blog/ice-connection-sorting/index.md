@@ -6,6 +6,8 @@ description: SDP 配置的优先级并不是决定性因素 🧐
 
 *最新内容和勘误请参见笔者撰写的线上书籍[《WebRTC 学习指南》](https://webrtc.mthli.com/connection/ice-connection-sorting/)。*
 
+**本文所有源码均基于 WebRTC M85 (branch-heads/4183) 版本进行分析。**
+
 在 [PeerConnection 连接流程](https://webrtc.mthli.com/connection/peer-connection/) 中，当 Peer Initiator 收到 answerSdp 之后便会开始 ICE 流程。在 answerSdp 中可能包含多条 ICE candidates（候选服务器）信息，此时 WebRTC 便会分别和这些 candidates 建立连接，然后选出其中最优的那条连接作为配对结果进行通话。
 
 ```cpp:title=候选服务器信息示例
@@ -182,7 +184,7 @@ int BasicIceController::CompareConnectionStates(
 
 CompareConnectionStates 顾名思义，主要是连接状态的比较，具体逻辑如下：
 
-1. 对于 a 和 b，首先选择两者中可写入（writable）或者假定（presume）可写入的那个。假定可写入的判断条件可以简单认为是 local candidate 为 relay 模式，且 remote candidate 为 relay 或者 prflx 模式。relay 模式即为 TURN 模式；prflx 模式指的是在使用 STUN 模式连接成功后，WebRTC 发现可以与远端直连了，便会生成新的 remote candidate 作为候选。
+1. 对于 a 和 b，首先选择两者中可写入（writable）或者假定（presume）可写入的那个。假定可写入的判断条件可以简单认为是 local candidate 为 relay 模式，且 remote candidate 为 relay 或者 prflx 模式。relay 模式即 TURN 模式；prflx 模式是指在使用 STUN 模式连接成功后，WebRTC 如果可以与远端直连，便会本地生成新的 remote candidate 作为候选。
 2. 或者选择 `write_state` 更小的那个。`Connection::WriteState` 的枚举定义如下：
     - `STATE_WRITABLE = 0` 表示近期有收到过 ping responses；
     - `STATE_WRITE_UNRELIABLE = 1` 表示有一些 ping 发送失败了；

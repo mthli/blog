@@ -6,11 +6,13 @@ description: 采集 / 渲染 / 编码 / 发送 / 滤镜 🎥
 
 *最新内容和勘误请参见笔者撰写的线上书籍[《WebRTC 学习指南》](https://webrtc.mthli.com/connection/video-streaming-process/)。*
 
-视频的推流大致可以分为采集、渲染、编码和发送四个过程。尽管本博客侧重于网络相关的内容，也就是最后的发送过程，但我们依然有必要对整个推流过程有所了解。这也有助于我们给 WebRTC 添加滤镜等功能。
+**本文所有源码均基于 WebRTC M85 (branch-heads/4183) 版本进行分析。**
+
+视频的推流大致可以分为采集、渲染、编码和发送四个过程。尽管本书侧重于网络相关的内容，也就是最后的发送过程，但我们依然有必要对整个推流过程有所了解。这也有助于我们给 WebRTC 添加滤镜等功能。
 
 ## 采集
 
-采集的实现强烈依赖系统提供的相机 API，但渲染、编码和发送过程与则系统无关。由于笔者是 Android 开发，因此这部分内容将围绕 Android 展开（iOS 应该大同小异）。建议读者结合 [mthli/YaaRTC](https://github.com/mthli/YaaRTC) 的源码阅读。
+采集的实现强烈依赖系统提供的相机 API，但渲染、编码和发送过程与则系统无关。由于笔者是 Android 开发，因此这部分内容将围绕 Android 展开（iOS 应该大同小异）。
 
 当我们需要开启摄像头时，可以调用 WebRTC 提供的 VideoCapturer，这个类（的具体实现）封装并统一了 Android Camera 与 [Camera2](https://developer.android.com/training/camera2) 两套 API，其初始化方法的定义如下：
 
@@ -135,22 +137,21 @@ webrtc::VideoStreamEncoder::OnFrame
   → webrtc::PacedSender::Process #2
   → webrtc::PacingController::ProcessPackets
   → webrtc::PacedSender::SendRtpPacket
-  → webrtc::ModuleRtpRtcpImpl2::TrySendPacket #3
+  → webrtc::ModuleRtpRtcpImpl2::TrySendPacket
   → webrtc::RtpSenderEgress::SendPacket
   → webrtc::RtpSenderEgress::SendPacketToNetwork
   → cricket::WebRtcVideoChannel::SendRtp
   → cricket::MediaChannel::SendPacket
   → cricket::MediaChannel::DoSendPacket
   → cricket::VideoChannel::SendPacket
-  → webrtc::DtlsSrtpTransport::SendRtpPacket #4
+  → webrtc::DtlsSrtpTransport::SendRtpPacket #3
 ```
 
 这里分别对调用栈中标记的序号做说明：
 
 1. 这里的编码器是 LibvpxVp8Encoder，但换成其他继承自 `webrtc::VideoEncoder` 的子类都是可以的，比如 VP9Encoder 或者 H264Encoder。
 2. RtpPacket 入队之后，将由 `webrtc::ProcessThreadImpl::Process` 进行处理，严格意义上已经不算是调用栈了，但读者也可以将其理解为 RtpPacket 的处理流程。
-3. `webrtc::ModuleRtpRtcpImpl2` 是 WebRTC M85 (branch-heads/4183) 版本的新实现。
-4. 从这里开始进入 PeerConnection 发送数据包的流程。
+3. 从这里开始进入 PeerConnection 发送数据包的流程。
 
 ## 添加滤镜
 
