@@ -8,6 +8,7 @@ Yet another blog of myself 👀
 
 ## Archives
 
+- [WebRTC 视频降级原因](https://mthli.xyz/video-quality-limitation/)
 - [Keylines Privacy Policy](https://mthli.xyz/keylines/)
 - [LogLog Privacy Policy](https://mthli.xyz/loglog/)
 - [递归锁的缺点](https://mthli.xyz/recursive-re-entrant-locks/)
