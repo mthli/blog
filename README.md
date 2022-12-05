@@ -8,6 +8,7 @@ Yet another blog of myself 👀
 
 ## Archives
 
+- [硬件内存模型](https://mthli.xyz/hardware-memory-models/)
 - [WebRTC 视频降级原因](https://mthli.xyz/video-quality-limitation/)
 - [Keylines Privacy Policy](https://mthli.xyz/keylines/)
 - [LogLog Privacy Policy](https://mthli.xyz/loglog/)
