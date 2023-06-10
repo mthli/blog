@@ -30,7 +30,7 @@ API 的出现当然解放了大量生产力，加上官方网页的体验不佳�
 
 另一大类是问答 App，比如 [Chatbase](https://www.chatbase.co/) 和 [ChatPDF](https://www.chatpdf.com/)。
 
-我也构想了一个场景，叫做 Chat Bookmark。因为我的浏览器书签实在太多了，但 Chrome 只能检索书签标题和链接，如果有插件能检索书签内容岂不美哉？而且书签内容就是个人知识库，天然适合 GPT + [Embeddings](https://platform.openai.com/docs/guides/embeddings) 场景。但是当我尝试把给所有书签建立向量时才发现，不是所有链接都可以被简单爬取的，有的链接要登录、有的需要 DOM 渲染（React）… 所以这个想法也破产了。
+我也构想了一个场景，叫做 Chat Bookmark。因为我的浏览器书签实在太多了，但 Chrome 只能检索书签标题和链接，如果有插件能检索书签内容岂不美哉？而且书签内容就是个人知识库，天然适合 GPT + [Embeddings](https://platform.openai.com/docs/guides/embeddings) 场景。但是当我尝试把给所有书签建立向量时才发现，不是所有链接都可以被简单爬取的，有的链接要登录、有的链接需要 DOM 渲染（React）… 所以这个想法也破产了。
 
 既然谈到了知识库，这就不得不提一些逻辑悖论。网上经常有人分享自己制作的某个领域的 GPT 问答 App，但其实你点开以后并不一定知道该问什么；回答的问题也难以求证数据来源，甚至不知道对不对。前者在提问前需要一些上下文背景；后者则需要给予使用者足够的数据源索引，类似 [New Bing](https://www.bing.com/new)，不幸的是大部分问答产品都没有提供索引功能。
 
