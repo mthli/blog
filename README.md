@@ -8,9 +8,8 @@ Yet another blog of myself 👀
 
 ## Archives
 
+- [Snapseek Privacy Policy](https://mthli.xyz/snapseek/)
 - [GPT App 的问题与局限](https://mthli.xyz/gpt-limit/)
-- [Lunar Privacy Policy](https://mthli.xyz/lunar/)
-- [NewBoy Privacy Policy](https://mthli.xyz/newboy/)
 - [WebRTC 视频降级原因](https://mthli.xyz/video-quality-limitation/)
 - [Keylines Privacy Policy](https://mthli.xyz/keylines/)
 - [LogLog Privacy Policy](https://mthli.xyz/loglog/)
