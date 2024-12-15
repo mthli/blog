@@ -8,6 +8,7 @@ Yet another blog of myself 👀
 
 ## Archives
 
+- [Pocket Preset Privacy Policy](https://mthli.xyz/pocket-preset/)
 - [Snapseek Privacy Policy](https://mthli.xyz/snapseek/)
 - [GPT App 的问题与局限](https://mthli.xyz/gpt-limit/)
 - [WebRTC 视频降级原因](https://mthli.xyz/video-quality-limitation/)
