@@ -1,0 +1,10 @@
+[build]
+  command = "npm run build"
+  publish = "public"
+
+[build.environment]
+  # Gatsby 2 relies on webpack 4 (md4 hashing), so it needs Node with the
+  # legacy OpenSSL provider; `npm run build` already sets NODE_OPTIONS.
+  # Node must also be new enough for `node:`-prefixed core modules and for
+  # npm to understand lockfileVersion 3.
+  NODE_VERSION = "18"
