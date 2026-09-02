@@ -184,8 +184,8 @@ description: 所有上下文都存在 git log 里 ♾️
 ### 完成任务之后
 
 - 如果实现改动导致现有模块 map 在职责、公开入口点、生命周期或数据流、依赖、不变量、已知局限方面失准，
-  在可用时以定向刷新模式使用 `$map-module`；否则在收尾前报告该 map 已过期。影响范围无法界定时使用全量刷新。
-  若 map 中记录的陈述依然成立，则不要改动它。
+  在可用时以定向刷新模式使用 `$map-module`；否则在收尾前报告该 map 已过期。
+  影响范围无法界定时使用全量刷新。若 map 中记录的陈述依然成立，则不要改动它。
 - 使用 `$commit-context` 时，为每条 Decision 填写 `MODULE`、`WHY`、`ALTERNATIVES`、`CHOSEN`、`TRADEOFFS`、`RISKS`。
 - 当一条新 Decision 取代了 `.codex/decisions/` 中的某条决策时，补上 `SUPERSEDES`。
 ```
